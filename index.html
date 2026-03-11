@@ -230,7 +230,7 @@
             margin-top: 20px;
         }
 
-        /* Withdrawal Card - Without Icons */
+        /* Withdrawal Card */
         .withdraw-card {
             background: white;
             border-radius: 50px;
@@ -261,7 +261,7 @@
             font-size: 14px;
         }
 
-        /* Method Grid - Without Icons, Only Text */
+        /* Method Grid - Text Only */
         .method-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -499,7 +499,7 @@
                 </div>
             </div>
 
-            <!-- Withdrawal Card - Without Icons -->
+            <!-- Withdrawal Card -->
             <div class="withdraw-card">
                 <div class="withdraw-header">
                     <h2>
@@ -553,7 +553,7 @@
             </div>
         </div>
 
-        <!-- Stats - Global Records -->
+        <!-- Stats -->
         <div class="stats-grid">
             <div class="stat-box">
                 <div class="stat-number" id="totalSpins">0</div>
@@ -659,6 +659,11 @@
             }
 
             function displayHistory(history) {
+                if (history.length === 0) {
+                    historyList.innerHTML = '<div style="text-align: center; color: #94a3b8;">No withdrawals yet</div>';
+                    return;
+                }
+                
                 historyList.innerHTML = history.map(item => `
                     <div class="history-item">
                         <span>${item.method} • ${item.number.slice(0,4)}******</span>
@@ -677,6 +682,7 @@
                     spinButton.disabled = false;
                     timerText.innerText = 'Ready to Spin!';
                     timerContainer.style.background = '#fef9e7';
+                    timerContainer.style.borderColor = '#fbbf24';
                     return true;
                 } else {
                     spinButton.disabled = true;
@@ -747,16 +753,17 @@
                 }
             }
 
-            // ========== SPIN FUNCTION ==========
+            // ========== SPIN FUNCTION - FIXED ==========
             window.spinWheel = function() {
                 let data = loadData();
                 let lastSpinTime = data.lastSpinTime ? parseInt(data.lastSpinTime) : null;
                 
+                // Check if 1 hour has passed
                 if (lastSpinTime) {
                     let hoursPassed = (Date.now() - lastSpinTime) / (1000 * 60 * 60);
                     if (hoursPassed < 1) {
                         let minutesLeft = Math.ceil(60 - (hoursPassed * 60));
-                        spinResult.innerHTML = `⏰ Please wait ${minutesLeft} minutes!`;
+                        spinResult.innerHTML = `⏰ Please wait ${minutesLeft} minute${minutesLeft > 1 ? 's' : ''}!`;
                         return;
                     }
                 }
@@ -769,6 +776,7 @@
 
                 let spinVelocity = 0.6;
                 const spinDeceleration = 0.97;
+                const arc = (2 * Math.PI) / segments.length;
                 
                 function animateSpin() {
                     spinVelocity *= spinDeceleration;
@@ -778,11 +786,22 @@
                     if (spinVelocity > 0.002) {
                         requestAnimationFrame(animateSpin);
                     } else {
-                        // Calculate prize
-                        const finalAngle = currentAngle % (2 * Math.PI);
-                        let segmentIndex = Math.floor((2 * Math.PI - finalAngle) / ((2 * Math.PI) / segments.length)) % segments.length;
+                        // FIXED PRIZE LOGIC
+                        // Normalize angle to 0-2PI range
+                        let normalizedAngle = currentAngle % (2 * Math.PI);
+                        if (normalizedAngle < 0) normalizedAngle += (2 * Math.PI);
+                        
+                        // Add half segment to account for pointer position
+                        normalizedAngle = (normalizedAngle + arc/2) % (2 * Math.PI);
+                        
+                        // Calculate segment index (0 to segments.length-1)
+                        let segmentIndex = Math.floor(normalizedAngle / arc);
+                        
+                        // Ensure index is valid
+                        if (segmentIndex >= segments.length) segmentIndex = 0;
                         
                         const prize = segments[segmentIndex].value;
+                        const label = segments[segmentIndex].label;
                         
                         if (prize > 0) {
                             // Update balance
@@ -796,7 +815,7 @@
                             
                             saveGlobalStats(newTotalSpins, data.totalPayouts, newTotalWon, newBiggestWin);
                             
-                            spinResult.innerHTML = `🎉 You won ${prize} PKR!`;
+                            spinResult.innerHTML = `🎉 You won ${prize} PKR (${label})!`;
                             startMoneyRain();
                         } else {
                             // Update spins only
@@ -869,6 +888,7 @@
                     date: new Date().toLocaleString()
                 });
                 
+                // Keep only last 5
                 if (history.length > 5) {
                     history.pop();
                 }
