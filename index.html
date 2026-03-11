@@ -29,7 +29,7 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
+            background: #f0f2f5;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -44,7 +44,7 @@
             z-index: 10;
         }
 
-        /* Header */
+        /* Header - Pehle Jaisa */
         .header {
             background: white;
             border-radius: 30px;
@@ -66,47 +66,39 @@
         .logo-area i {
             font-size: 36px;
             color: #fbbf24;
-            filter: drop-shadow(0 4px 6px #fbbf2450);
         }
 
         .logo-area h1 {
             font-size: 36px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1e293b, #334155);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1e293b;
         }
 
         .balance-card {
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            background: #f8fafc;
             border-radius: 100px;
             padding: 15px 35px;
             display: flex;
             align-items: center;
             gap: 20px;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 8px 12px -8px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.8);
+            border: 1px solid #e2e8f0;
         }
 
         .balance-label {
             color: #475569;
             font-size: 15px;
             font-weight: 500;
-            letter-spacing: 0.5px;
         }
 
         .balance-amount {
             font-size: 32px;
             font-weight: 800;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fbbf24;
         }
 
         .balance-currency {
             color: #64748b;
             font-weight: 600;
-            font-size: 18px;
         }
 
         /* Main Grid */
@@ -116,32 +108,15 @@
             gap: 30px;
         }
 
-        /* Spin Card */
+        /* Spin Card - Pehle Jaisa */
         .spin-card {
             background: white;
             border-radius: 50px;
             padding: 40px;
             box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.8);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .spin-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.03), transparent 50%);
-            pointer-events: none;
         }
 
         .spin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 30px;
         }
 
@@ -157,15 +132,9 @@
         .spin-header h2 i {
             color: #fbbf24;
             font-size: 36px;
-            filter: drop-shadow(0 4px 8px #fbbf2460);
         }
 
-        /* Hidden Timer - Sirf system ke liye, user ko nahi dikhega */
-        .hidden-timer {
-            display: none;
-        }
-
-        /* Wheel */
+        /* Wheel - Pehle Jaisa */
         .wheel-wrapper {
             position: relative;
             width: 380px;
@@ -177,37 +146,24 @@
             height: auto;
             display: block;
             border-radius: 50%;
-            box-shadow: 0 30px 50px -15px rgba(0,0,0,0.3), 0 0 0 6px white, 0 0 0 8px #fbbf2420;
-            transition: transform 0.1s ease-out;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
+            border: 4px solid white;
         }
 
         .wheel-pointer {
             position: absolute;
-            top: -20px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 22px solid transparent;
-            border-right: 22px solid transparent;
-            border-top: 45px solid #dc2626;
-            filter: drop-shadow(0 8px 12px #dc262660);
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 35px solid #e53e3e;
             z-index: 5;
         }
 
-        .wheel-pointer::after {
-            content: '';
-            position: absolute;
-            top: -52px;
-            left: -8px;
-            width: 16px;
-            height: 16px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px #fbbf24;
-        }
-
-        /* Spin Button */
+        /* Spin Button - Pehle Jaisa */
         .spin-btn {
             width: 100%;
             padding: 22px;
@@ -219,15 +175,12 @@
             font-weight: 800;
             cursor: pointer;
             box-shadow: 0 20px 30px -8px #fbbf24, 0 6px 0 #b45309;
-            transition: all 0.1s ease;
+            transition: all 0.1s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
             margin: 30px 0 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 2px solid rgba(255,255,255,0.3);
         }
 
         .spin-btn:active {
@@ -235,47 +188,23 @@
             box-shadow: 0 15px 25px -8px #fbbf24, 0 2px 0 #b45309;
         }
 
-        .spin-btn:disabled {
-            opacity: 0.5;
-            transform: translateY(6px);
-            box-shadow: 0 10px 20px -8px #fbbf24, 0 2px 0 #b45309;
-            cursor: not-allowed;
-        }
-
-        /* Result */
         .result-message {
             text-align: center;
             font-size: 22px;
             font-weight: 600;
             color: #1e293b;
             padding: 20px;
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            background: #f8fafc;
             border-radius: 60px;
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 8px 12px -8px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
         }
 
-        /* Withdrawal Card */
+        /* Withdrawal Card - Pehle Jaisa */
         .withdraw-card {
             background: white;
             border-radius: 50px;
             padding: 40px;
             box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.8);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .withdraw-card::before {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -20%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(251,191,36,0.03), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
         }
 
         .withdraw-header {
@@ -299,11 +228,9 @@
             padding: 5px 15px;
             border-radius: 40px;
             font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
         }
 
-        /* Method Grid */
+        /* Method Grid - Pehle Jaisa */
         .method-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -318,53 +245,37 @@
             padding: 25px 10px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05);
         }
 
         .method-btn img {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             object-fit: contain;
-            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1));
-            transition: transform 0.3s;
-        }
-
-        .method-btn:hover {
-            transform: translateY(-5px);
-            border-color: #fbbf24;
-            box-shadow: 0 20px 30px -10px #fbbf2480;
-        }
-
-        .method-btn:hover img {
-            transform: scale(1.1);
         }
 
         .method-btn.active {
             border-color: #fbbf24;
-            background: linear-gradient(135deg, #fef9e7, #fff3cd);
-            box-shadow: 0 15px 25px -8px #fbbf24;
+            background: #fef9e7;
         }
 
         .method-btn span {
-            font-weight: 700;
+            font-weight: 600;
             color: #334155;
-            font-size: 16px;
-            letter-spacing: 0.5px;
+            font-size: 14px;
         }
 
-        /* Form */
+        /* Form - Pehle Jaisa, Lekin Bilkul Khali */
         .withdraw-form {
             margin-top: 30px;
         }
 
         .form-group {
             margin-bottom: 20px;
-            position: relative;
         }
 
         .form-group label {
@@ -372,73 +283,59 @@
             color: #475569;
             margin-bottom: 8px;
             font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            padding-left: 15px;
+            font-weight: 500;
         }
 
         .form-group input {
             width: 100%;
-            padding: 18px 25px;
+            padding: 16px 20px;
             background: #f8fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
             color: #1e293b;
             font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .form-group input:focus {
             outline: none;
             border-color: #fbbf24;
-            background: white;
-            box-shadow: 0 0 0 4px #fbbf2420, inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .form-group input::placeholder {
+            color: #94a3b8;
         }
 
         .withdraw-action-btn {
             width: 100%;
-            padding: 20px;
+            padding: 18px;
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             border: none;
-            border-radius: 60px;
+            border-radius: 16px;
             color: white;
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             margin: 30px 0 20px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            box-shadow: 0 20px 30px -10px #fbbf24;
-            border: 2px solid rgba(255,255,255,0.3);
         }
 
         .withdraw-action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 25px 35px -8px #fbbf24;
-        }
-
-        .withdraw-action-btn:active {
-            transform: translateY(2px);
+            transform: translateY(-2px);
             box-shadow: 0 15px 25px -8px #fbbf24;
         }
 
-        /* History */
+        /* History - Pehle Jaisa */
         .withdraw-history {
             margin-top: 30px;
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            border-radius: 40px;
+            background: #f8fafc;
+            border-radius: 30px;
             padding: 25px;
             max-height: 220px;
             overflow-y: auto;
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 8px 12px -8px rgba(0,0,0,0.1);
         }
 
         .history-title {
@@ -467,23 +364,6 @@
             border-radius: 30px;
             margin-bottom: 10px;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-
-        .history-item:hover {
-            transform: translateX(5px);
-            border-color: #fbbf24;
-        }
-
-        .history-item span:first-child {
-            font-weight: 500;
-            color: #475569;
-        }
-
-        .history-item span:nth-child(2) {
-            font-weight: 700;
-            color: #fbbf24;
         }
 
         .history-item span:last-child {
@@ -495,7 +375,7 @@
             font-weight: 600;
         }
 
-        /* Stats - Yeh roz update honge */
+        /* Stats - Sab Zero */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -505,34 +385,23 @@
 
         .stat-box {
             background: white;
-            border-radius: 40px;
-            padding: 30px 20px;
+            border-radius: 30px;
+            padding: 25px;
             text-align: center;
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.8);
-            transition: transform 0.3s;
-        }
-
-        .stat-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 45px -15px #fbbf24;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
         }
 
         .stat-number {
-            font-size: 38px;
+            font-size: 34px;
             font-weight: 800;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            color: #fbbf24;
+            margin-bottom: 5px;
         }
 
         .stat-label {
             color: #64748b;
             font-size: 14px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         /* Money Rain */
@@ -552,37 +421,21 @@
             font-size: 28px;
             opacity: 0;
             animation: moneyFall 3s linear forwards;
-            filter: drop-shadow(0 10px 10px #fbbf2480);
         }
 
         @keyframes moneyFall {
-            0% { transform: translateY(-100px) rotate(0deg) scale(0.5); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg) scale(1.5); opacity: 0; }
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Hidden Timer - Sirf system ke liye */
-        .system-timer {
-            display: none;
-        }
-
-        /* Responsive */
         @media (max-width: 1000px) {
             .content-grid { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 600px) {
-            .header { flex-direction: column; gap: 15px; }
-            .method-grid { grid-template-columns: 1fr; }
-            .wheel-wrapper { width: 280px; }
         }
     </style>
 </head>
 <body>
     <div class="money-rain" id="moneyRain"></div>
-
-    <!-- Hidden System Timer - User ko nahi dikhega -->
-    <div class="system-timer" id="systemTimer"></div>
 
     <div class="main-container">
         <!-- Header -->
@@ -623,7 +476,7 @@
                 </div>
             </div>
 
-            <!-- Withdrawal Card -->
+            <!-- Withdrawal Card - Pehle Jaisa, Lekin Fields Khali -->
             <div class="withdraw-card">
                 <div class="withdraw-header">
                     <h2>
@@ -636,37 +489,34 @@
                 <div class="method-grid">
                     <div class="method-btn active" id="methodEasypaisa" onclick="selectMethod('easypaisa')">
                         <img src="https://crystalpng.com/wp-content/uploads/2026/03/easypaisa-logo.png" 
-                             alt="Easypaisa"
-                             onerror="this.src='https://crystalpng.com/product/easypaisa-logo/'">
+                             alt="Easypaisa">
                         <span>Easypaisa</span>
                     </div>
                     <div class="method-btn" id="methodJazzcash" onclick="selectMethod('jazzcash')">
                         <img src="https://crystalpng.com/wp-content/uploads/2024/12/new-jazzcash-logo.png" 
-                             alt="JazzCash"
-                             onerror="this.src='https://crystalpng.com/product/new-jazzcash-logo/'">
+                             alt="JazzCash">
                         <span>JazzCash</span>
                     </div>
                     <div class="method-btn" id="methodUpaisa" onclick="selectMethod('upaisa')">
                         <img src="https://crystalpng.com/wp-content/uploads/2025/09/upaisa-logo.png" 
-                             alt="UPaisa"
-                             onerror="this.src='https://crystalpng.com/product/upaisa-logo/'">
+                             alt="UPaisa">
                         <span>UPaisa</span>
                     </div>
                 </div>
 
-                <!-- Form -->
+                <!-- Form - Bilkul Khali -->
                 <div class="withdraw-form">
                     <div class="form-group">
-                        <label>FULL NAME</label>
-                        <input type="text" id="accountName" placeholder="e.g., Muhammad Ali" value="Muhammad Ali">
+                        <label>Full Name</label>
+                        <input type="text" id="accountName" placeholder="Enter your full name">
                     </div>
                     <div class="form-group">
-                        <label>MOBILE NUMBER</label>
-                        <input type="text" id="accountNumber" placeholder="03XX-XXXXXXX" value="0300 1234567">
+                        <label>Mobile Number</label>
+                        <input type="text" id="accountNumber" placeholder="03XX-XXXXXXX">
                     </div>
                     <div class="form-group">
-                        <label>AMOUNT (PKR) - MIN 100</label>
-                        <input type="number" id="withdrawAmount" placeholder="Enter amount" value="100" min="100">
+                        <label>Amount (PKR) - Min 100</label>
+                        <input type="number" id="withdrawAmount" placeholder="Enter amount" min="100">
                     </div>
 
                     <button class="withdraw-action-btn" onclick="processWithdrawal()">
@@ -680,13 +530,13 @@
                         <i class="fas fa-clock-rotate-left"></i> Recent Transactions
                     </div>
                     <div id="historyList">
-                        <!-- History will be loaded dynamically -->
+                        <!-- Empty initially -->
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Stats - Yeh roz update honge -->
+        <!-- Stats - Sab Zero -->
         <div class="stats-grid">
             <div class="stat-box">
                 <div class="stat-number" id="totalWon">0</div>
@@ -709,14 +559,14 @@
 
     <script>
         (function() {
-            // ========== INITIALIZATION ==========
+            // ========== SPIN WHEEL ==========
             const canvas = document.getElementById('wheelCanvas');
             const ctx = canvas.getContext('2d');
             const spinResult = document.getElementById('spinResult');
             const spinButton = document.getElementById('spinButton');
             const balanceSpan = document.getElementById('userBalance');
             
-            // Stats elements
+            // Stats elements - sab zero
             const totalWonEl = document.getElementById('totalWon');
             const todaySpinsEl = document.getElementById('todaySpins');
             const biggestWinEl = document.getElementById('biggestWin');
@@ -725,64 +575,39 @@
 
             // Prize segments
             const segments = [
-                { label: '1 RS', value: 1, emoji: '💰', color: '#F87171' },
-                { label: '😞 Oops', value: 0, emoji: '😞', color: '#9CA3AF' },
-                { label: '10 RS', value: 10, emoji: '💰', color: '#FBBF24' },
-                { label: '2 RS', value: 2, emoji: '💰', color: '#FCA5A5' },
-                { label: '😞 Oops', value: 0, emoji: '😞', color: '#9CA3AF' },
-                { label: '15 RS', value: 15, emoji: '💰', color: '#34D399' },
-                { label: '5 RS', value: 5, emoji: '💰', color: '#60A5FA' },
-                { label: '😞 Oops', value: 0, emoji: '😞', color: '#9CA3AF' },
-                { label: '5.5 RS', value: 5.5, emoji: '💰', color: '#C084FC' }
+                { label: '1 RS', value: 1, color: '#F87171' },
+                { label: '😞', value: 0, color: '#9CA3AF' },
+                { label: '10 RS', value: 10, color: '#FBBF24' },
+                { label: '2 RS', value: 2, color: '#FCA5A5' },
+                { label: '😞', value: 0, color: '#9CA3AF' },
+                { label: '15 RS', value: 15, color: '#34D399' },
+                { label: '5 RS', value: 5, color: '#60A5FA' },
+                { label: '😞', value: 0, color: '#9CA3AF' },
+                { label: '5.5 RS', value: 5.5, color: '#C084FC' }
             ];
 
             let currentAngle = 0;
             let isSpinning = false;
-            let balance = parseFloat(localStorage.getItem('userBalance')) || 0;
+            let balance = 0; // Zero se start
+            let spinCount = 0;
             
-            // Daily stats - yeh har 24 ghante reset honge
-            let dailyStats = loadDailyStats();
+            // Daily stats - sab zero
+            let dailyStats = {
+                totalWon: 0,
+                todaySpins: 0,
+                biggestWin: 0,
+                payouts: 0,
+                history: []
+            };
             
-            balanceSpan.innerText = balance.toFixed(1);
-            updateStatsDisplay();
-
-            // ========== DAILY STATS MANAGEMENT ==========
-            function loadDailyStats() {
-                const today = new Date().toDateString();
-                const saved = localStorage.getItem('dailyStats');
-                
-                if (saved) {
-                    const stats = JSON.parse(saved);
-                    if (stats.date === today) {
-                        return stats;
-                    }
-                }
-                
-                // New day - reset stats
-                const newStats = {
-                    date: today,
-                    totalWon: 0,
-                    todaySpins: 0,
-                    biggestWin: 0,
-                    payouts: 0,
-                    history: []
-                };
-                
-                localStorage.setItem('dailyStats', JSON.stringify(newStats));
-                return newStats;
-            }
-
-            function saveDailyStats() {
-                localStorage.setItem('dailyStats', JSON.stringify(dailyStats));
-            }
+            balanceSpan.innerText = balance;
 
             function updateStatsDisplay() {
-                totalWonEl.innerText = dailyStats.totalWon.toLocaleString();
-                todaySpinsEl.innerText = dailyStats.todaySpins.toLocaleString();
+                totalWonEl.innerText = dailyStats.totalWon;
+                todaySpinsEl.innerText = dailyStats.todaySpins;
                 biggestWinEl.innerText = dailyStats.biggestWin;
-                payoutsEl.innerText = dailyStats.payouts.toLocaleString();
+                payoutsEl.innerText = dailyStats.payouts;
                 
-                // Update history
                 historyList.innerHTML = dailyStats.history.map(item => `
                     <div class="history-item">
                         <span>${item.method} • ${item.number.slice(0,4)}******</span>
@@ -792,16 +617,7 @@
                 `).join('');
             }
 
-            // ========== SPIN AVAILABILITY CHECK (Hidden) ==========
-            function canSpin() {
-                const lastSpinTime = localStorage.getItem('lastSpinTime');
-                if (!lastSpinTime) return true;
-                
-                const hoursPassed = (Date.now() - parseInt(lastSpinTime)) / (1000 * 60 * 60);
-                return hoursPassed >= 24;
-            }
-
-            // ========== DRAW WHEEL ==========
+            // Draw wheel
             function drawWheel(angle = 0) {
                 const arc = (2 * Math.PI) / segments.length;
                 ctx.clearRect(0, 0, 400, 400);
@@ -823,19 +639,15 @@
                     ctx.textAlign = 'center';
                     ctx.fillStyle = 'white';
                     ctx.font = 'bold 16px Inter';
-                    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-                    ctx.shadowBlur = 8;
                     ctx.fillText(segments[i].label, 100, 8);
                     ctx.restore();
                 }
 
+                // Center circle
                 ctx.beginPath();
                 ctx.arc(200, 200, 45, 0, 2 * Math.PI);
                 ctx.fillStyle = '#fbbf24';
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = '#fbbf24';
                 ctx.fill();
-                ctx.shadowBlur = 0;
                 
                 ctx.beginPath();
                 ctx.arc(200, 200, 35, 0, 2 * Math.PI);
@@ -845,35 +657,24 @@
 
             drawWheel(currentAngle);
 
-            // ========== MONEY RAIN ==========
-            function startMoneyRain(prize) {
+            // Money Rain
+            function startMoneyRain() {
                 const rainContainer = document.getElementById('moneyRain');
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 15; i++) {
                     const note = document.createElement('div');
                     note.className = 'money-note';
                     note.innerHTML = '💰';
                     note.style.left = Math.random() * 100 + '%';
                     note.style.animationDelay = Math.random() * 2 + 's';
-                    note.style.fontSize = (Math.random() * 20 + 25) + 'px';
                     rainContainer.appendChild(note);
                     
-                    setTimeout(() => {
-                        note.remove();
-                    }, 3000);
+                    setTimeout(() => note.remove(), 3000);
                 }
             }
 
-            // ========== SPIN FUNCTION ==========
+            // Spin function
             window.spinWheel = function() {
                 if (isSpinning) return;
-                
-                // Check if can spin (24 hours condition)
-                if (!canSpin()) {
-                    const lastSpin = localStorage.getItem('lastSpinTime');
-                    const hoursLeft = 24 - ((Date.now() - parseInt(lastSpin)) / (1000 * 60 * 60));
-                    spinResult.innerHTML = `⏰ Please wait ${Math.ceil(hoursLeft)} hours for next spin!`;
-                    return;
-                }
 
                 isSpinning = true;
                 spinButton.disabled = true;
@@ -896,29 +697,21 @@
                         const prize = segments[segmentIndex].value;
                         
                         if (prize > 0) {
-                            // Update balance
-                            balance = parseFloat((balance + prize).toFixed(1));
-                            balanceSpan.innerText = balance.toFixed(1);
-                            localStorage.setItem('userBalance', balance);
+                            balance += prize;
+                            balanceSpan.innerText = balance;
                             
-                            // Update daily stats
                             dailyStats.totalWon += prize;
                             dailyStats.todaySpins += 1;
                             if (prize > dailyStats.biggestWin) {
                                 dailyStats.biggestWin = prize;
                             }
                             
-                            spinResult.innerHTML = `🎉 Congratulations! You won ${prize} PKR!`;
-                            startMoneyRain(prize);
+                            spinResult.innerHTML = `🎉 You won ${prize} PKR!`;
+                            startMoneyRain();
                         } else {
-                            spinResult.innerHTML = `😞 Oops! Better luck next time!`;
+                            spinResult.innerHTML = `😞 Better luck next time!`;
                         }
                         
-                        // Save spin time
-                        localStorage.setItem('lastSpinTime', Date.now());
-                        
-                        // Save stats and update display
-                        saveDailyStats();
                         updateStatsDisplay();
                         
                         isSpinning = false;
@@ -929,7 +722,7 @@
                 requestAnimationFrame(animateSpin);
             };
 
-            // ========== WITHDRAWAL SYSTEM ==========
+            // Withdrawal methods
             window.selectMethod = function(method) {
                 document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
                 if (method === 'easypaisa') document.getElementById('methodEasypaisa').classList.add('active');
@@ -946,7 +739,7 @@
                 if (document.getElementById('methodJazzcash').classList.contains('active')) method = 'JazzCash';
                 if (document.getElementById('methodUpaisa').classList.contains('active')) method = 'UPaisa';
 
-                if (!name || !number) {
+                if (!name || !number || !amount) {
                     alert('❌ Please fill all details');
                     return;
                 }
@@ -962,41 +755,31 @@
                 }
 
                 // Process withdrawal
-                balance = parseFloat((balance - amount).toFixed(1));
-                balanceSpan.innerText = balance.toFixed(1);
-                localStorage.setItem('userBalance', balance);
+                balance -= amount;
+                balanceSpan.innerText = balance;
                 
-                // Update daily stats
                 dailyStats.payouts += 1;
                 
-                // Add to history
-                const transaction = {
+                dailyStats.history.unshift({
                     method: method,
                     number: number,
                     amount: amount,
-                    status: 'Pending',
-                    time: new Date().toLocaleTimeString()
-                };
+                    status: 'Pending'
+                });
                 
-                dailyStats.history.unshift(transaction);
                 if (dailyStats.history.length > 5) {
                     dailyStats.history.pop();
                 }
                 
-                saveDailyStats();
                 updateStatsDisplay();
+
+                // Clear form
+                document.getElementById('accountName').value = '';
+                document.getElementById('accountNumber').value = '';
+                document.getElementById('withdrawAmount').value = '';
 
                 alert(`✅ Withdrawal request submitted!\nAmount: ${amount} PKR\nMethod: ${method}`);
             };
-
-            // Check for new day every minute
-            setInterval(() => {
-                const newStats = loadDailyStats();
-                if (newStats.date !== dailyStats.date) {
-                    dailyStats = newStats;
-                    updateStatsDisplay();
-                }
-            }, 60000);
         })();
     </script>
 </body>
