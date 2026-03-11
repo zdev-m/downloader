@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earn Cash • Daily Spin</title>
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=rel" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -268,7 +268,7 @@
             color: #1a202c;
         }
 
-        /* Method Grid - Original Icons */
+        /* Method Grid - Original Icons from CrystalPNG */
         .method-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -291,8 +291,8 @@
         }
 
         .method-btn img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             object-fit: contain;
         }
 
@@ -514,24 +514,24 @@
                     <h2>Withdraw Cash</h2>
                 </div>
 
-                <!-- Method Grid with Real Icons -->
+                <!-- Method Grid with Real Icons from CrystalPNG -->
                 <div class="method-grid">
                     <div class="method-btn active" id="methodEasypaisa" onclick="selectMethod('easypaisa')">
-                        <img src="https://seeklogo.com/images/E/easypaisa-logo-8F4F8F8F8F-seeklogo.com.png" 
+                        <img src="https://crystalpng.com/wp-content/uploads/2026/03/easypaisa-logo.png" 
                              alt="Easypaisa"
-                             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/72/Easypaisa_logo.png'">
+                             onerror="this.src='https://crystalpng.com/product/easypaisa-logo/'">
                         <span>Easypaisa</span>
                     </div>
                     <div class="method-btn" id="methodJazzcash" onclick="selectMethod('jazzcash')">
-                        <img src="https://seeklogo.com/images/J/jazzcash-logo-8F4F8F8F8F-seeklogo.com.png" 
+                        <img src="https://crystalpng.com/wp-content/uploads/2024/12/new-jazzcash-logo.png" 
                              alt="JazzCash"
-                             onerror="this.src='https://www.jazzcash.com.pk/wp-content/uploads/2020/07/jazzcash-logo.png'">
+                             onerror="this.src='https://crystalpng.com/product/new-jazzcash-logo/'">
                         <span>JazzCash</span>
                     </div>
                     <div class="method-btn" id="methodUpaisa" onclick="selectMethod('upaisa')">
-                        <img src="https://seeklogo.com/images/U/upaisa-logo-8F4F8F8F8F-seeklogo.com.png" 
+                        <img src="https://crystalpng.com/wp-content/uploads/2025/09/upaisa-logo.png" 
                              alt="UPaisa"
-                             onerror="this.src='https://www.upaisa.com/images/logo.png'">
+                             onerror="this.src='https://crystalpng.com/product/upaisa-logo/'">
                         <span>UPaisa</span>
                     </div>
                 </div>
@@ -609,16 +609,16 @@
             const timerText = document.getElementById('timerText');
             const timerBadge = document.getElementById('timerBadge');
 
-            // Prize segments as requested: 1, 2, 2.5, 5, 5.5, 10, 12, 15
+            // Prize segments - 2.5 RS aur 12 RS hata kar sad emoji
             const segments = [
-                { label: '1 RS', value: 1, color: '#F56565' },
-                { label: '2 RS', value: 2, color: '#48BB78' },
-                { label: '2.5 RS', value: 2.5, color: '#4299E1' },
-                { label: '5 RS', value: 5, color: '#ED8936' },
-                { label: '5.5 RS', value: 5.5, color: '#9F7AEA' },
-                { label: '10 RS', value: 10, color: '#FBBF24' },
-                { label: '12 RS', value: 12, color: '#FC8181' },
-                { label: '15 RS', value: 15, color: '#68D391' }
+                { label: '1 RS', value: 1, emoji: '💰', color: '#F56565' },
+                { label: '2 RS', value: 2, emoji: '💰', color: '#48BB78' },
+                { label: '😞', value: 0, emoji: '😞', color: '#A0AEC0' },
+                { label: '5 RS', value: 5, emoji: '💰', color: '#ED8936' },
+                { label: '5.5 RS', value: 5.5, emoji: '💰', color: '#9F7AEA' },
+                { label: '😞', value: 0, emoji: '😞', color: '#A0AEC0' },
+                { label: '10 RS', value: 10, emoji: '💰', color: '#FBBF24' },
+                { label: '15 RS', value: 15, emoji: '💰', color: '#68D391' }
             ];
 
             let currentAngle = 0;
@@ -626,7 +626,7 @@
             let balance = parseFloat(localStorage.getItem('userBalance')) || 0;
             let lastSpinTime = localStorage.getItem('lastSpinTime') || 0;
             let spinVelocity = 0;
-            let spinDeceleration = 0.98;
+            const spinDeceleration = 0.98;
             
             balanceSpan.innerText = balance.toFixed(1);
 
@@ -644,7 +644,6 @@
                 } else {
                     spinButton.disabled = true;
                     const hoursLeft = 24 - hoursPassed;
-                    const nextSpin = Math.ceil(hoursLeft * 60);
                     timerText.innerText = `Next in ${Math.floor(hoursLeft)}h ${Math.floor((hoursLeft*60)%60)}m`;
                     timerBadge.style.background = '#fff5f5';
                     timerBadge.style.borderColor = '#fc8181';
@@ -675,8 +674,8 @@
                     ctx.rotate(startAngle + arc / 2);
                     ctx.textAlign = 'center';
                     ctx.fillStyle = 'white';
-                    ctx.font = 'bold 16px Inter';
-                    ctx.shadowColor = 'rgba(0,0,0,0.2)';
+                    ctx.font = 'bold 18px Inter';
+                    ctx.shadowColor = 'rgba(0,0,0,0.3)';
                     ctx.shadowBlur = 5;
                     ctx.fillText(segments[i].label, 100, 8);
                     ctx.restore();
@@ -713,7 +712,7 @@
                 }
             }
 
-            // Spin function with gradual speed
+            // Spin function
             window.spinWheel = function() {
                 if (isSpinning || !checkSpinAvailability()) return;
 
@@ -721,46 +720,37 @@
                 spinButton.disabled = true;
                 spinResult.innerHTML = 'Spinning...';
 
-                // Initial high speed, then gradually slow down
-                spinVelocity = 0.5; // Start fast
-                const targetAngle = currentAngle + (Math.random() * 2 * Math.PI);
+                spinVelocity = 0.5;
                 
                 function animateSpin() {
-                    // Gradually decrease speed
                     spinVelocity *= spinDeceleration;
-                    
-                    // Update angle
                     currentAngle += spinVelocity;
                     drawWheel(currentAngle);
 
-                    // Stop when very slow
                     if (spinVelocity > 0.001) {
                         requestAnimationFrame(animateSpin);
                     } else {
-                        // Calculate final prize
                         const finalAngle = currentAngle % (2 * Math.PI);
                         let segmentIndex = Math.floor((2 * Math.PI - finalAngle) / ((2 * Math.PI) / segments.length)) % segments.length;
                         
                         const prize = segments[segmentIndex].value;
                         
-                        // Update balance
-                        balance = parseFloat((balance + prize).toFixed(1));
-                        balanceSpan.innerText = balance.toFixed(1);
-                        localStorage.setItem('userBalance', balance);
+                        if (prize > 0) {
+                            balance = parseFloat((balance + prize).toFixed(1));
+                            balanceSpan.innerText = balance.toFixed(1);
+                            localStorage.setItem('userBalance', balance);
+                            
+                            spinResult.innerHTML = `🎉 You won ${prize} PKR!`;
+                            startMoneyRain(prize);
+                            
+                            const totalWon = document.getElementById('totalWon');
+                            totalWon.innerText = (parseInt(totalWon.innerText.replace(',','')) + prize).toFixed(1);
+                        } else {
+                            spinResult.innerHTML = `😞 Better luck next time!`;
+                        }
                         
-                        // Save spin time
                         lastSpinTime = Date.now();
                         localStorage.setItem('lastSpinTime', lastSpinTime);
-                        
-                        // Show result
-                        spinResult.innerHTML = `🎉 You won ${prize} PKR!`;
-                        
-                        // Money rain
-                        startMoneyRain(prize);
-                        
-                        // Update stats
-                        const totalWon = document.getElementById('totalWon');
-                        totalWon.innerText = (parseInt(totalWon.innerText.replace(',','')) + prize).toFixed(1);
                         
                         isSpinning = false;
                         checkSpinAvailability();
@@ -802,12 +792,10 @@
                     return;
                 }
 
-                // Process withdrawal
                 balance = parseFloat((balance - amount).toFixed(1));
                 balanceSpan.innerText = balance.toFixed(1);
                 localStorage.setItem('userBalance', balance);
 
-                // Add to history
                 const historyList = document.getElementById('historyList');
                 const newItem = document.createElement('div');
                 newItem.className = 'history-item';
@@ -821,7 +809,6 @@
                 alert(`✅ Withdrawal request submitted!\nAmount: ${amount} PKR\nMethod: ${method}`);
             };
 
-            // Check availability every minute
             setInterval(checkSpinAvailability, 60000);
         })();
     </script>
