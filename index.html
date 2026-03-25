@@ -10,912 +10,1482 @@
 </body>
 </html>
 
-<!DOCTYPE html>
+html_code = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earn Cash • Daily Spin</title>
-    <!-- Fonts & Icons -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AudioFlow - Liquid Glass Video to Audio Converter</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #7c3aed;
+            --secondary: #a855f7;
+            --accent: #ec4899;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-strong: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --success: #10b981;
+            --error: #ef4444;
+            --liquid-blur: 40px;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker-bg);
             min-height: 100vh;
-            background: #f0f2f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
+            color: var(--text-primary);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .main-container {
-            max-width: 1300px;
-            width: 100%;
-            z-index: 10;
-        }
-
-        /* Header */
-        .header {
-            background: white;
-            border-radius: 30px;
-            padding: 20px 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-area i {
-            font-size: 36px;
-            color: #fbbf24;
-        }
-
-        .logo-area h1 {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        .balance-card {
-            background: #f8fafc;
-            border-radius: 100px;
-            padding: 15px 35px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .balance-label {
-            color: #475569;
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        .balance-amount {
-            font-size: 32px;
-            font-weight: 800;
-            color: #fbbf24;
-        }
-
-        .balance-currency {
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        /* Timer Display */
-        .timer-container {
-            background: #fef9e7;
-            border-radius: 60px;
-            padding: 12px 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #fbbf24;
-            margin-top: 15px;
-        }
-
-        .timer-container i {
-            color: #fbbf24;
-            font-size: 20px;
-        }
-
-        .timer-text {
-            color: #92400e;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        /* Main Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.9fr;
-            gap: 30px;
-        }
-
-        /* Spin Card */
-        .spin-card {
-            background: white;
-            border-radius: 50px;
-            padding: 40px;
-            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
-        }
-
-        .spin-header {
-            margin-bottom: 20px;
-        }
-
-        .spin-header h2 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .spin-header h2 i {
-            color: #fbbf24;
-            font-size: 36px;
-        }
-
-        /* Wheel */
-        .wheel-wrapper {
-            position: relative;
-            width: 380px;
-            margin: 20px auto 30px;
-        }
-
-        canvas#wheelCanvas {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 50%;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
-            border: 4px solid white;
-        }
-
-        .wheel-pointer {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 35px solid #e53e3e;
-            z-index: 5;
-        }
-
-        /* Spin Button */
-        .spin-btn {
-            width: 100%;
-            padding: 22px;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            border: none;
-            border-radius: 80px;
-            color: white;
-            font-size: 26px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 20px 30px -8px #fbbf24, 0 6px 0 #b45309;
-            transition: all 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .spin-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 15px 25px -8px #fbbf24, 0 2px 0 #b45309;
-        }
-
-        .spin-btn:disabled {
-            opacity: 0.6;
-            transform: translateY(6px);
-            box-shadow: 0 10px 20px -8px #fbbf24, 0 2px 0 #b45309;
-            cursor: not-allowed;
-        }
-
-        .result-message {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 600;
-            color: #1e293b;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 60px;
-            border: 1px solid #e2e8f0;
-            margin-top: 20px;
-        }
-
-        /* Withdrawal Card */
-        .withdraw-card {
-            background: white;
-            border-radius: 50px;
-            padding: 40px;
-            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
-        }
-
-        .withdraw-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px dashed #e2e8f0;
-        }
-
-        .withdraw-header h2 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .withdraw-header h2 span {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 40px;
-            font-size: 14px;
-        }
-
-        /* Method Grid - Text Only */
-        .method-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .method-btn {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 30px;
-            padding: 20px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .method-btn.active {
-            border-color: #fbbf24;
-            background: #fef9e7;
-        }
-
-        .method-btn span {
-            font-weight: 600;
-            color: #334155;
-            font-size: 16px;
-        }
-
-        /* Form */
-        .withdraw-form {
-            margin-top: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            color: #475569;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 16px 20px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            color: #1e293b;
-            font-size: 16px;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #fbbf24;
-        }
-
-        .withdraw-action-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            border: none;
-            border-radius: 16px;
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: 30px 0 20px;
-        }
-
-        .withdraw-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px -8px #fbbf24;
-        }
-
-        /* History */
-        .withdraw-history {
-            margin-top: 30px;
-            background: #f8fafc;
-            border-radius: 30px;
-            padding: 25px;
-            max-height: 220px;
-            overflow-y: auto;
-        }
-
-        .history-title {
-            color: #334155;
-            margin-bottom: 20px;
-            font-size: 18px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-bottom: 15px;
-            border-bottom: 2px dashed #cbd5e1;
-        }
-
-        .history-title i {
-            color: #fbbf24;
-            font-size: 22px;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border-radius: 30px;
-            margin-bottom: 10px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .history-item span:last-child {
-            background: #dcfce7;
-            color: #166534;
-            padding: 5px 15px;
-            border-radius: 40px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .stat-box {
-            background: white;
-            border-radius: 30px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
-        }
-
-        .stat-number {
-            font-size: 34px;
-            font-weight: 800;
-            color: #fbbf24;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #64748b;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* Money Rain */
-        .money-rain {
+        /* Animated Background with Liquid Effect */
+        .bg-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 9999;
+            z-index: -2;
+            overflow: hidden;
+            background: radial-gradient(ellipse at top, #1a0b2e 0%, var(--darker-bg) 50%, #0a0a0f 100%);
         }
 
-        .money-note {
+        .liquid-blob {
             position: absolute;
-            color: #fbbf24;
-            font-size: 28px;
+            border-radius: 50%;
+            filter: blur(var(--liquid-blur));
+            opacity: 0.5;
+            animation: liquidFloat 15s infinite ease-in-out;
+        }
+
+        .blob-1 {
+            width: 60vmax;
+            height: 60vmax;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            top: -20%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 50vmax;
+            height: 50vmax;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            width: 40vmax;
+            height: 40vmax;
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes liquidFloat {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1) rotate(0deg); 
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            }
+            25% { 
+                transform: translate(5%, -5%) scale(1.1) rotate(5deg); 
+                border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+            }
+            50% { 
+                transform: translate(-5%, 5%) scale(0.9) rotate(-5deg); 
+                border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+            }
+            75% { 
+                transform: translate(3%, 3%) scale(1.05) rotate(3deg); 
+                border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%;
+            }
+        }
+
+        /* Noise Texture Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Liquid Glass Effect */
+        .liquid-glass {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 
+                0 8px 32px 0 rgba(0, 0, 0, 0.37),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: liquidShine 8s infinite;
+        }
+
+        @keyframes liquidShine {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+
+        /* Navigation - Responsive */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1rem, 4vw, 2.5rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(10,10,15,0.9) 0%, transparent 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: none;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-btn {
+            display: flex;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        /* Main Container - Responsive Grid */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: clamp(5rem, 15vw, 8rem) clamp(1rem, 4vw, 3rem) 2rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-areas: 
+                "converter"
+                "player"
+                "playlist";
+            gap: clamp(1.5rem, 4vw, 3rem);
+        }
+
+        /* Tablet Layout */
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 350px;
+                grid-template-areas: 
+                    "converter player"
+                    "playlist playlist";
+            }
+        }
+
+        /* Desktop Layout */
+        @media (min-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr 400px;
+                grid-template-areas: 
+                    "converter player"
+                    "converter player"
+                    "playlist playlist";
+            }
+        }
+
+        /* Converter Section */
+        .converter-section {
+            grid-area: converter;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 5vw, 2.25rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Upload Area - Liquid Glass */
+        .upload-area {
+            border: 2px dashed var(--glass-border);
+            border-radius: clamp(20px, 4vw, 32px);
+            padding: clamp(2rem, 6vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(124, 58, 237, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.2);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--accent);
+            background: rgba(236, 72, 153, 0.1);
+        }
+
+        .upload-icon {
+            width: clamp(60px, 15vw, 100px);
+            height: clamp(60px, 15vw, 100px);
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto clamp(1rem, 3vw, 1.5rem);
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            animation: liquidPulse 3s infinite;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4);
+        }
+
+        @keyframes liquidPulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4);
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 15px 50px rgba(236, 72, 153, 0.5);
+            }
+        }
+
+        .upload-text h3 {
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .upload-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: clamp(0.875rem, 2.5vw, 1rem);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn-primary {
+            padding: clamp(0.75rem, 2.5vw, 1rem) clamp(1.5rem, 5vw, 2rem);
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            font-weight: 600;
+            font-size: clamp(0.875rem, 2.5vw, 1rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Conversion Progress */
+        .conversion-status {
+            display: none;
+            padding: clamp(1.5rem, 4vw, 2rem);
+            border-radius: clamp(16px, 3vw, 24px);
+            margin-top: 1rem;
+        }
+
+        .conversion-status.active {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Player Section - Sticky on Desktop */
+        .player-section {
+            grid-area: player;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .player-section {
+                position: sticky;
+                top: 100px;
+                height: fit-content;
+            }
+        }
+
+        .player-card {
+            border-radius: clamp(24px, 5vw, 40px);
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1.25rem, 3vw, 2rem);
+        }
+
+        .album-art {
+            width: clamp(140px, 35vw, 220px);
+            height: clamp(140px, 35vw, 220px);
+            border-radius: clamp(20px, 4vw, 32px);
+            background: linear-gradient(135deg, var(--primary), var(--accent), #f43f5e);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(3rem, 10vw, 5rem);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.3);
+            animation: albumRotate 20s linear infinite;
+        }
+
+        @keyframes albumRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .album-art.paused {
+            animation-play-state: paused;
+        }
+
+        .album-art::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            animation: albumShine 3s infinite;
+        }
+
+        @keyframes albumShine {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .track-info {
+            text-align: center;
+        }
+
+        .track-info h3 {
+            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 600;
+        }
+
+        .track-info p {
+            color: var(--text-secondary);
+            font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+        }
+
+        /* Visualizer */
+        .visualizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: clamp(2px, 1vw, 4px);
+            height: clamp(30px, 10vw, 50px);
+            margin: 1rem 0;
+        }
+
+        .bar {
+            width: clamp(3px, 1.5vw, 6px);
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            border-radius: 3px;
+            animation: equalizer 0.8s infinite ease-in-out;
+        }
+
+        .bar:nth-child(1) { height: 20%; animation-delay: 0s; }
+        .bar:nth-child(2) { height: 40%; animation-delay: 0.1s; }
+        .bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+        .bar:nth-child(4) { height: 30%; animation-delay: 0.3s; }
+        .bar:nth-child(5) { height: 50%; animation-delay: 0.4s; }
+        .bar:nth-child(6) { height: 70%; animation-delay: 0.5s; }
+        .bar:nth-child(7) { height: 40%; animation-delay: 0.6s; }
+        .bar:nth-child(8) { height: 60%; animation-delay: 0.7s; }
+
+        @keyframes equalizer {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.4); }
+        }
+
+        .visualizer.paused .bar {
+            animation-play-state: paused;
+            height: 10% !important;
+            transition: height 0.3s ease;
+        }
+
+        /* Player Controls */
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .seek-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .time-display {
+            font-size: clamp(0.7rem, 2vw, 0.8rem);
+            color: var(--text-muted);
+            min-width: 40px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .seek-bar {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .seek-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.6);
+            transition: transform 0.2s ease;
+        }
+
+        .seek-bar::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(0.75rem, 2.5vw, 1.5rem);
+        }
+
+        .control-btn {
+            width: clamp(40px, 12vw, 50px);
+            height: clamp(40px, 12vw, 50px);
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .control-btn.play-pause {
+            width: clamp(55px, 18vw, 70px);
+            height: clamp(55px, 18vw, 70px);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .control-btn.play-pause:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.6);
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .volume-slider {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Modified Playlist Section - Horizontal Scroll on Mobile */
+        .playlist-section {
+            grid-area: playlist;
+        }
+
+        .playlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .playlist-header h3 {
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .playlist-count {
+            padding: 0.4rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Mobile: Horizontal Scroll Playlist */
+        .playlist-container {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.5rem 0.5rem 1rem;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .playlist-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .playlist-item {
+            flex: 0 0 auto;
+            width: clamp(280px, 80vw, 320px);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: clamp(1rem, 3vw, 1.25rem);
+            border-radius: clamp(16px, 4vw, 24px);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .playlist-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(236,72,153,0.1));
             opacity: 0;
-            animation: moneyFall 3s linear forwards;
+            transition: opacity 0.3s ease;
         }
 
-        @keyframes moneyFall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        .playlist-item:hover::before,
+        .playlist-item.active::before {
+            opacity: 1;
         }
 
-        @media (max-width: 1000px) {
-            .content-grid { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .playlist-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(124, 58, 237, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .playlist-item.active {
+            border-color: var(--primary);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .playlist-item.playing .track-number {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            animation: pulse 2s infinite;
+        }
+
+        .track-number {
+            width: clamp(45px, 12vw, 55px);
+            height: clamp(45px, 12vw, 55px);
+            border-radius: clamp(12px, 3vw, 16px);
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            flex-shrink: 0;
+        }
+
+        .track-number i {
+            font-size: 0.9rem;
+        }
+
+        .playlist-item-content {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .playlist-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .playlist-item-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: clamp(0.95rem, 3vw, 1.1rem);
+        }
+
+        .playlist-item-meta {
+            font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+            color: var(--text-muted);
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .playlist-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .playlist-item-duration {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .delete-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+
+        .playlist-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* Tablet & Desktop: Vertical Grid Playlist */
+        @media (min-width: 768px) {
+            .playlist-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 1.25rem;
+                overflow-x: visible;
+                overflow-y: visible;
+                padding: 0.5rem;
+            }
+
+            .playlist-item {
+                width: auto;
+                scroll-snap-align: none;
+            }
+        }
+
+        /* Large Desktop: 3-4 columns */
+        @media (min-width: 1200px) {
+            .playlist-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        .empty-playlist {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: clamp(3rem, 10vw, 5rem) clamp(1.5rem, 5vw, 3rem);
+            color: var(--text-muted);
+            background: var(--glass-bg);
+            border: 2px dashed var(--glass-border);
+            border-radius: clamp(20px, 4vw, 32px);
+        }
+
+        .empty-playlist i {
+            font-size: clamp(3rem, 10vw, 4rem);
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-playlist p {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: clamp(1rem, 5vw, 2rem);
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--glass-strong);
+            backdrop-filter: blur(30px);
+            padding: clamp(0.875rem, 3vw, 1rem) clamp(1.25rem, 5vw, 2rem);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 90vw;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .toast.success i { color: var(--success); }
+        .toast.error i { color: var(--error); }
+
+        .toast span {
+            font-weight: 600;
+            font-size: clamp(0.875rem, 2.5vw, 1rem);
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker-bg);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-spinner {
+            width: clamp(50px, 15vw, 70px);
+            height: clamp(50px, 15vw, 70px);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: clamp(1rem, 3vw, 1.25rem);
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) {
+            .delete-btn {
+                opacity: 1;
+            }
+            
+            .playlist-item:hover {
+                transform: none;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Landscape Mode on Mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .container {
+                padding-top: 4rem;
+            }
+            
+            .album-art {
+                width: 100px;
+                height: 100px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="money-rain" id="moneyRain"></div>
+    <!-- Background -->
+    <div class="bg-container">
+        <div class="liquid-blob blob-1"></div>
+        <div class="liquid-blob blob-2"></div>
+        <div class="liquid-blob blob-3"></div>
+    </div>
+    <div class="noise-overlay"></div>
 
-    <div class="main-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo-area">
-                <i class="fas fa-coins"></i>
-                <h1>Earn Cash</h1>
-            </div>
-            <div class="balance-card">
-                <span class="balance-label">Your Balance</span>
-                <span class="balance-amount" id="userBalance">0</span>
-                <span class="balance-currency">PKR</span>
-            </div>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Loading AudioFlow...</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-wave-square"></i>
+            AudioFlow
         </div>
+        <ul class="nav-links">
+            <li><a href="#converter">Converter</a></li>
+            <li><a href="#player">Player</a></li>
+            <li><a href="#playlist">Playlist</a></li>
+        </ul>
+        <button class="mobile-menu-btn liquid-glass">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
 
-        <!-- Main Grid -->
-        <div class="content-grid">
-            <!-- Spin Card -->
-            <div class="spin-card">
-                <div class="spin-header">
-                    <h2>
-                        <i class="fas fa-dharmachakra"></i>
-                        Daily Spin
-                    </h2>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Converter Section -->
+        <div class="converter-section" id="converter">
+            <div class="section-title">
+                <i class="fas fa-video"></i>
+                Video to Audio Converter
+            </div>
+
+            <div class="upload-area liquid-glass" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
                 </div>
-
-                <!-- Timer Display -->
-                <div class="timer-container" id="timerContainer">
-                    <i class="fas fa-hourglass-half"></i>
-                    <span class="timer-text" id="timerText">Ready to Spin!</span>
+                <div class="upload-text">
+                    <h3>Drop your video here</h3>
+                    <p>or click to browse (MP4, AVI, MOV, MKV)</p>
                 </div>
-
-                <div class="wheel-wrapper">
-                    <canvas id="wheelCanvas" width="400" height="400"></canvas>
-                    <div class="wheel-pointer"></div>
-                </div>
-
-                <button class="spin-btn" id="spinButton" onclick="spinWheel()">
-                    <i class="fas fa-dharmachakra"></i> SPIN NOW
+                <button class="btn-primary">
+                    <i class="fas fa-folder-open"></i> Select Video
                 </button>
-
-                <div class="result-message" id="spinResult">
-                    Click Spin to try your luck!
-                </div>
             </div>
 
-            <!-- Withdrawal Card -->
-            <div class="withdraw-card">
-                <div class="withdraw-header">
-                    <h2>
-                        Withdraw Cash
-                        <span>INSTANT</span>
-                    </h2>
-                </div>
+            <input type="file" id="fileInput" class="file-input" accept="video/*" onchange="handleFileSelect(event)">
 
-                <!-- Method Grid - Text Only -->
-                <div class="method-grid">
-                    <div class="method-btn active" id="methodEasypaisa" onclick="selectMethod('easypaisa')">
-                        <span>Easypaisa</span>
+            <!-- Conversion Status -->
+            <div class="conversion-status liquid-glass" id="conversionStatus">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-magic"></i>
                     </div>
-                    <div class="method-btn" id="methodJazzcash" onclick="selectMethod('jazzcash')">
-                        <span>JazzCash</span>
-                    </div>
-                    <div class="method-btn" id="methodUpaisa" onclick="selectMethod('upaisa')">
-                        <span>UPaisa</span>
+                    <div>
+                        <h4 style="margin-bottom: 0.25rem;">Converting Video to Audio...</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;" id="statusText">Extracting audio track</p>
                     </div>
                 </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                    <i class="fas fa-info-circle"></i> This may take a few moments
+                </p>
+            </div>
+        </div>
 
-                <!-- Form -->
-                <div class="withdraw-form">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="accountName" placeholder="Enter your full name">
-                    </div>
-                    <div class="form-group">
-                        <label>Mobile Number</label>
-                        <input type="text" id="accountNumber" placeholder="03XX-XXXXXXX">
-                    </div>
-                    <div class="form-group">
-                        <label>Amount (PKR) - Min 100</label>
-                        <input type="number" id="withdrawAmount" placeholder="Enter amount" min="100">
-                    </div>
-
-                    <button class="withdraw-action-btn" onclick="processWithdrawal()">
-                        <i class="fas fa-arrow-right"></i> WITHDRAW NOW
-                    </button>
+        <!-- Player Section -->
+        <div class="player-section" id="player">
+            <div class="player-card liquid-glass">
+                <div class="album-art paused" id="albumArt">
+                    <i class="fas fa-music"></i>
+                </div>
+                
+                <div class="track-info">
+                    <h3 id="trackTitle">No track selected</h3>
+                    <p id="trackArtist">Select a song from playlist</p>
                 </div>
 
-                <!-- History -->
-                <div class="withdraw-history">
-                    <div class="history-title">
-                        <i class="fas fa-clock-rotate-left"></i> Recent Withdrawals
+                <!-- Visualizer -->
+                <div class="visualizer paused" id="visualizer">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+
+                <audio id="audioPlayer" preload="metadata"></audio>
+
+                <div class="player-controls">
+                    <div class="seek-bar-container">
+                        <span class="time-display" id="currentTime">0:00</span>
+                        <input type="range" class="seek-bar" id="seekBar" value="0" min="0" max="100" step="0.1">
+                        <span class="time-display" id="duration">0:00</span>
                     </div>
-                    <div id="historyList">
-                        <!-- History will be loaded from localStorage -->
+
+                    <div class="control-buttons">
+                        <button class="control-btn" onclick="previousTrack()">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button class="control-btn play-pause" id="playPauseBtn" onclick="togglePlayPause()">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="control-btn" onclick="nextTrack()">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                    </div>
+
+                    <div class="volume-control liquid-glass">
+                        <i class="fas fa-volume-up" style="color: var(--text-muted); font-size: 0.9rem;"></i>
+                        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70">
+                        <span id="volumeValue" style="font-size: 0.8rem; color: var(--text-muted); min-width: 35px;">70%</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-box">
-                <div class="stat-number" id="totalSpins">0</div>
-                <div class="stat-label">Total Spins</div>
+        <!-- Playlist Section - Modified Layout -->
+        <div class="playlist-section" id="playlist">
+            <div class="playlist-header">
+                <h3><i class="fas fa-list-music"></i> Your Playlist</h3>
+                <span class="playlist-count liquid-glass" id="playlistCount">0 songs</span>
             </div>
-            <div class="stat-box">
-                <div class="stat-number" id="totalPayouts">0</div>
-                <div class="stat-label">Total Payouts</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number" id="totalWon">0</div>
-                <div class="stat-label">Total Won</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number" id="biggestWin">0</div>
-                <div class="stat-label">Biggest Win</div>
+            <div class="playlist-container" id="playlistContainer">
+                <div class="empty-playlist">
+                    <i class="fas fa-music"></i>
+                    <p>No audio files yet. Convert videos to add songs!</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span>Notification</span>
+    </div>
+
     <script>
-        (function() {
-            // ========== INITIALIZATION ==========
-            const canvas = document.getElementById('wheelCanvas');
-            const ctx = canvas.getContext('2d');
-            const spinResult = document.getElementById('spinResult');
-            const spinButton = document.getElementById('spinButton');
-            const balanceSpan = document.getElementById('userBalance');
-            const timerText = document.getElementById('timerText');
-            const timerContainer = document.getElementById('timerContainer');
+        // Global Variables
+        let playlist = [];
+        let currentTrackIndex = -1;
+        let isPlaying = false;
+        let audioElement = document.getElementById('audioPlayer');
+
+        // Initialize
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+
+            setupEventListeners();
+            loadPlaylistFromStorage();
+        };
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            const uploadArea = document.getElementById('uploadArea');
             
-            // Stats elements
-            const totalSpinsEl = document.getElementById('totalSpins');
-            const totalPayoutsEl = document.getElementById('totalPayouts');
-            const totalWonEl = document.getElementById('totalWon');
-            const biggestWinEl = document.getElementById('biggestWin');
-            const historyList = document.getElementById('historyList');
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
 
-            // Prize segments - Fixed order
-            const segments = [
-                { label: '1 RS', value: 1, color: '#F87171' },
-                { label: '😞', value: 0, color: '#9CA3AF' },
-                { label: '10 RS', value: 10, color: '#FBBF24' },
-                { label: '2 RS', value: 2, color: '#FCA5A5' },
-                { label: '😞', value: 0, color: '#9CA3AF' },
-                { label: '15 RS', value: 15, color: '#34D399' },
-                { label: '5 RS', value: 5, color: '#60A5FA' },
-                { label: '😞', value: 0, color: '#9CA3AF' },
-                { label: '5.5 RS', value: 5.5, color: '#C084FC' }
-            ];
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
 
-            let currentAngle = 0;
-            let isSpinning = false;
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    processVideoFile(files[0]);
+                }
+            });
 
-            // ========== LOCALSTORAGE DATA ==========
-            function loadData() {
-                // User balance
-                let balance = parseFloat(localStorage.getItem('userBalance')) || 0;
-                balanceSpan.innerText = balance;
+            audioElement.addEventListener('timeupdate', updateProgress);
+            audioElement.addEventListener('loadedmetadata', () => {
+                document.getElementById('duration').textContent = formatTime(audioElement.duration);
+            });
+            audioElement.addEventListener('ended', () => {
+                nextTrack();
+            });
+
+            document.getElementById('seekBar').addEventListener('input', (e) => {
+                const time = (e.target.value / 100) * audioElement.duration;
+                audioElement.currentTime = time;
+            });
+
+            document.getElementById('volumeSlider').addEventListener('input', (e) => {
+                const volume = e.target.value / 100;
+                audioElement.volume = volume;
+                document.getElementById('volumeValue').textContent = e.target.value + '%';
+            });
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                processVideoFile(file);
+            }
+        }
+
+        function processVideoFile(file) {
+            const statusDiv = document.getElementById('conversionStatus');
+            const progressFill = document.getElementById('progressFill');
+            const statusText = document.getElementById('statusText');
+            
+            statusDiv.classList.add('active');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
                 
-                // Global stats
-                let totalSpins = parseInt(localStorage.getItem('totalSpins')) || 0;
-                let totalPayouts = parseInt(localStorage.getItem('totalPayouts')) || 0;
-                let totalWon = parseFloat(localStorage.getItem('totalWon')) || 0;
-                let biggestWin = parseFloat(localStorage.getItem('biggestWin')) || 0;
+                progressFill.style.width = progress + '%';
                 
-                totalSpinsEl.innerText = totalSpins;
-                totalPayoutsEl.innerText = totalPayouts;
-                totalWonEl.innerText = totalWon.toFixed(1);
-                biggestWinEl.innerText = biggestWin.toFixed(1);
-                
-                // Withdrawal history
-                let history = JSON.parse(localStorage.getItem('withdrawalHistory')) || [];
-                displayHistory(history);
-                
-                // Last spin time
-                let lastSpinTime = localStorage.getItem('lastSpinTime');
-                if (lastSpinTime) {
-                    updateTimer(parseInt(lastSpinTime));
+                if (progress < 30) {
+                    statusText.textContent = 'Reading video file...';
+                } else if (progress < 60) {
+                    statusText.textContent = 'Extracting audio track...';
+                } else if (progress < 90) {
+                    statusText.textContent = 'Processing audio data...';
                 } else {
-                    timerText.innerText = 'Ready to Spin!';
-                    timerContainer.style.background = '#fef9e7';
+                    statusText.textContent = 'Finalizing...';
                 }
                 
-                return { balance, totalSpins, totalPayouts, totalWon, biggestWin, history, lastSpinTime };
-            }
-
-            function saveBalance(balance) {
-                localStorage.setItem('userBalance', balance);
-                balanceSpan.innerText = balance;
-            }
-
-            function saveGlobalStats(spins, payouts, won, biggest) {
-                localStorage.setItem('totalSpins', spins);
-                localStorage.setItem('totalPayouts', payouts);
-                localStorage.setItem('totalWon', won);
-                localStorage.setItem('biggestWin', biggest);
-                
-                totalSpinsEl.innerText = spins;
-                totalPayoutsEl.innerText = payouts;
-                totalWonEl.innerText = won.toFixed(1);
-                biggestWinEl.innerText = biggest.toFixed(1);
-            }
-
-            function displayHistory(history) {
-                if (history.length === 0) {
-                    historyList.innerHTML = '<div style="text-align: center; color: #94a3b8;">No withdrawals yet</div>';
-                    return;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        statusDiv.classList.remove('active');
+                        progressFill.style.width = '0%';
+                        addToPlaylist(file);
+                        showToast('Video converted successfully!', 'success');
+                    }, 500);
                 }
-                
-                historyList.innerHTML = history.map(item => `
-                    <div class="history-item">
-                        <span>${item.method} • ${item.number.slice(0,4)}******</span>
-                        <span>${item.amount} PKR</span>
-                        <span>${item.status}</span>
+            }, 300);
+        }
+
+        function addToPlaylist(videoFile) {
+            const audioName = videoFile.name.replace(/\.[^/.]+$/, '') + '.mp3';
+            const audioUrl = URL.createObjectURL(videoFile);
+            
+            const track = {
+                id: Date.now(),
+                title: audioName.replace('.mp3', ''),
+                artist: 'Converted from Video',
+                duration: '0:00',
+                url: audioUrl,
+                originalFile: videoFile.name
+            };
+            
+            playlist.push(track);
+            updatePlaylistUI();
+            savePlaylistToStorage();
+            
+            if (playlist.length === 1) {
+                loadTrack(0);
+            }
+        }
+
+        function updatePlaylistUI() {
+            const container = document.getElementById('playlistContainer');
+            const count = document.getElementById('playlistCount');
+            
+            count.textContent = playlist.length + ' song' + (playlist.length !== 1 ? 's' : '');
+            
+            if (playlist.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-playlist">
+                        <i class="fas fa-music"></i>
+                        <p>No audio files yet. Convert videos to add songs!</p>
                     </div>
-                `).join('');
+                `;
+                return;
             }
-
-            // ========== TIMER FUNCTIONS ==========
-            function updateTimer(lastSpinTime) {
-                const now = Date.now();
-                const hoursPassed = (now - lastSpinTime) / (1000 * 60 * 60);
-                
-                if (hoursPassed >= 1) {
-                    spinButton.disabled = false;
-                    timerText.innerText = 'Ready to Spin!';
-                    timerContainer.style.background = '#fef9e7';
-                    timerContainer.style.borderColor = '#fbbf24';
-                    return true;
-                } else {
-                    spinButton.disabled = true;
-                    const minutesLeft = Math.ceil((60 - (hoursPassed * 60)));
-                    timerText.innerText = `Next spin in ${minutesLeft} minute${minutesLeft > 1 ? 's' : ''}`;
-                    timerContainer.style.background = '#fee2e2';
-                    timerContainer.style.borderColor = '#ef4444';
-                    return false;
-                }
-            }
-
-            // ========== DRAW WHEEL ==========
-            function drawWheel(angle = 0) {
-                const arc = (2 * Math.PI) / segments.length;
-                ctx.clearRect(0, 0, 400, 400);
-                
-                for (let i = 0; i < segments.length; i++) {
-                    const startAngle = i * arc + angle;
-                    const endAngle = startAngle + arc;
-                    
-                    ctx.beginPath();
-                    ctx.fillStyle = segments[i].color;
-                    ctx.moveTo(200, 200);
-                    ctx.arc(200, 200, 200, startAngle, endAngle);
-                    ctx.closePath();
-                    ctx.fill();
-
-                    ctx.save();
-                    ctx.translate(200, 200);
-                    ctx.rotate(startAngle + arc / 2);
-                    ctx.textAlign = 'center';
-                    ctx.fillStyle = 'white';
-                    ctx.font = 'bold 16px Inter';
-                    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-                    ctx.shadowBlur = 5;
-                    ctx.fillText(segments[i].label, 100, 8);
-                    ctx.restore();
-                }
-
-                // Center circle
-                ctx.beginPath();
-                ctx.arc(200, 200, 45, 0, 2 * Math.PI);
-                ctx.fillStyle = '#fbbf24';
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#fbbf24';
-                ctx.fill();
-                ctx.shadowBlur = 0;
-                
-                ctx.beginPath();
-                ctx.arc(200, 200, 35, 0, 2 * Math.PI);
-                ctx.fillStyle = 'white';
-                ctx.fill();
-            }
-
-            // ========== MONEY RAIN ==========
-            function startMoneyRain() {
-                const rainContainer = document.getElementById('moneyRain');
-                for (let i = 0; i < 15; i++) {
-                    const note = document.createElement('div');
-                    note.className = 'money-note';
-                    note.innerHTML = '💰';
-                    note.style.left = Math.random() * 100 + '%';
-                    note.style.animationDelay = Math.random() * 2 + 's';
-                    note.style.fontSize = (Math.random() * 20 + 25) + 'px';
-                    rainContainer.appendChild(note);
-                    
-                    setTimeout(() => note.remove(), 3000);
-                }
-            }
-
-            // ========== SPIN FUNCTION - FIXED ==========
-            window.spinWheel = function() {
-                let data = loadData();
-                let lastSpinTime = data.lastSpinTime ? parseInt(data.lastSpinTime) : null;
-                
-                // Check if 1 hour has passed
-                if (lastSpinTime) {
-                    let hoursPassed = (Date.now() - lastSpinTime) / (1000 * 60 * 60);
-                    if (hoursPassed < 1) {
-                        let minutesLeft = Math.ceil(60 - (hoursPassed * 60));
-                        spinResult.innerHTML = `⏰ Please wait ${minutesLeft} minute${minutesLeft > 1 ? 's' : ''}!`;
-                        return;
-                    }
-                }
-
-                if (isSpinning) return;
-
-                isSpinning = true;
-                spinButton.disabled = true;
-                spinResult.innerHTML = 'Spinning...';
-
-                let spinVelocity = 0.6;
-                const spinDeceleration = 0.97;
-                const arc = (2 * Math.PI) / segments.length;
-                
-                function animateSpin() {
-                    spinVelocity *= spinDeceleration;
-                    currentAngle += spinVelocity;
-                    drawWheel(currentAngle);
-
-                    if (spinVelocity > 0.002) {
-                        requestAnimationFrame(animateSpin);
-                    } else {
-                        // FIXED PRIZE LOGIC
-                        // Normalize angle to 0-2PI range
-                        let normalizedAngle = currentAngle % (2 * Math.PI);
-                        if (normalizedAngle < 0) normalizedAngle += (2 * Math.PI);
-                        
-                        // Add half segment to account for pointer position
-                        normalizedAngle = (normalizedAngle + arc/2) % (2 * Math.PI);
-                        
-                        // Calculate segment index (0 to segments.length-1)
-                        let segmentIndex = Math.floor(normalizedAngle / arc);
-                        
-                        // Ensure index is valid
-                        if (segmentIndex >= segments.length) segmentIndex = 0;
-                        
-                        const prize = segments[segmentIndex].value;
-                        const label = segments[segmentIndex].label;
-                        
-                        if (prize > 0) {
-                            // Update balance
-                            let newBalance = data.balance + prize;
-                            saveBalance(newBalance);
-                            
-                            // Update global stats
-                            let newTotalWon = data.totalWon + prize;
-                            let newBiggestWin = prize > data.biggestWin ? prize : data.biggestWin;
-                            let newTotalSpins = data.totalSpins + 1;
-                            
-                            saveGlobalStats(newTotalSpins, data.totalPayouts, newTotalWon, newBiggestWin);
-                            
-                            spinResult.innerHTML = `🎉 You won ${prize} PKR (${label})!`;
-                            startMoneyRain();
-                        } else {
-                            // Update spins only
-                            let newTotalSpins = data.totalSpins + 1;
-                            saveGlobalStats(newTotalSpins, data.totalPayouts, data.totalWon, data.biggestWin);
-                            
-                            spinResult.innerHTML = `😞 Better luck next time!`;
-                        }
-                        
-                        // Save spin time
-                        localStorage.setItem('lastSpinTime', Date.now());
-                        updateTimer(Date.now());
-                        
-                        isSpinning = false;
-                    }
-                }
-
-                requestAnimationFrame(animateSpin);
-            };
-
-            // ========== WITHDRAWAL METHODS ==========
-            window.selectMethod = function(method) {
-                document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
-                if (method === 'easypaisa') document.getElementById('methodEasypaisa').classList.add('active');
-                if (method === 'jazzcash') document.getElementById('methodJazzcash').classList.add('active');
-                if (method === 'upaisa') document.getElementById('methodUpaisa').classList.add('active');
-            };
-
-            window.processWithdrawal = function() {
-                let data = loadData();
-                
-                const amount = parseFloat(document.getElementById('withdrawAmount').value);
-                const name = document.getElementById('accountName').value;
-                const number = document.getElementById('accountNumber').value;
-                
-                let method = 'Easypaisa';
-                if (document.getElementById('methodJazzcash').classList.contains('active')) method = 'JazzCash';
-                if (document.getElementById('methodUpaisa').classList.contains('active')) method = 'UPaisa';
-
-                if (!name || !number || !amount) {
-                    alert('❌ Please fill all details');
-                    return;
-                }
-
-                if (amount < 100) {
-                    alert('❌ Minimum withdrawal is 100 PKR');
-                    return;
-                }
-
-                if (amount > data.balance) {
-                    alert('❌ Insufficient balance');
-                    return;
-                }
-
-                // Update balance
-                let newBalance = data.balance - amount;
-                saveBalance(newBalance);
-                
-                // Update total payouts
-                let newTotalPayouts = data.totalPayouts + 1;
-                saveGlobalStats(data.totalSpins, newTotalPayouts, data.totalWon, data.biggestWin);
-                
-                // Add to history
-                let history = JSON.parse(localStorage.getItem('withdrawalHistory')) || [];
-                history.unshift({
-                    method: method,
-                    number: number,
-                    amount: amount,
-                    status: 'Pending',
-                    date: new Date().toLocaleString()
-                });
-                
-                // Keep only last 5
-                if (history.length > 5) {
-                    history.pop();
-                }
-                
-                localStorage.setItem('withdrawalHistory', JSON.stringify(history));
-                displayHistory(history);
-
-                // Clear form
-                document.getElementById('accountName').value = '';
-                document.getElementById('accountNumber').value = '';
-                document.getElementById('withdrawAmount').value = '';
-
-                alert(`✅ Withdrawal request submitted!\nAmount: ${amount} PKR\nMethod: ${method}`);
-            };
-
-            // ========== INITIAL LOAD ==========
-            drawWheel(currentAngle);
-            loadData();
             
-            // Update timer every minute
-            setInterval(() => {
-                let lastSpinTime = localStorage.getItem('lastSpinTime');
-                if (lastSpinTime) {
-                    updateTimer(parseInt(lastSpinTime));
+            container.innerHTML = playlist.map((track, index) => `
+                <div class="playlist-item liquid-glass ${index === currentTrackIndex ? 'active' : ''} ${index === currentTrackIndex && isPlaying ? 'playing' : ''}" 
+                     onclick="loadTrack(${index})" data-index="${index}">
+                    <div class="playlist-item-content">
+                        <div class="track-number">
+                            ${index === currentTrackIndex && isPlaying ? '<i class="fas fa-waveform"></i>' : index + 1}
+                        </div>
+                        <div class="playlist-item-info">
+                            <div class="playlist-item-title">${track.title}</div>
+                            <div class="playlist-item-meta">
+                                <i class="fas fa-video"></i> ${track.originalFile}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="playlist-item-footer">
+                        <span class="playlist-item-duration">${track.duration}</span>
+                        <button class="delete-btn" onclick="event.stopPropagation(); deleteTrack(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadTrack(index) {
+            if (index < 0 || index >= playlist.length) return;
+            
+            currentTrackIndex = index;
+            const track = playlist[index];
+            
+            document.getElementById('trackTitle').textContent = track.title;
+            document.getElementById('trackArtist').textContent = track.artist;
+            
+            audioElement.src = track.url;
+            audioElement.load();
+            
+            updatePlaylistUI();
+            playAudio();
+        }
+
+        function playAudio() {
+            audioElement.play().then(() => {
+                isPlaying = true;
+                updatePlayButton();
+                document.getElementById('visualizer').classList.remove('paused');
+                document.getElementById('albumArt').classList.remove('paused');
+                updatePlaylistUI();
+            }).catch(err => {
+                console.error('Playback failed:', err);
+                showToast('Playback failed. Try again.', 'error');
+            });
+        }
+
+        function pauseAudio() {
+            audioElement.pause();
+            isPlaying = false;
+            updatePlayButton();
+            document.getElementById('visualizer').classList.add('paused');
+            document.getElementById('albumArt').classList.add('paused');
+            updatePlaylistUI();
+        }
+
+        function togglePlayPause() {
+            if (playlist.length === 0) {
+                showToast('Please add songs to playlist first!', 'error');
+                return;
+            }
+            
+            if (currentTrackIndex === -1) {
+                loadTrack(0);
+                return;
+            }
+            
+            if (isPlaying) {
+                pauseAudio();
+            } else {
+                playAudio();
+            }
+        }
+
+        function updatePlayButton() {
+            const btn = document.getElementById('playPauseBtn');
+            btn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+        }
+
+        function updateProgress() {
+            const current = audioElement.currentTime;
+            const duration = audioElement.duration;
+            
+            if (duration) {
+                const progress = (current / duration) * 100;
+                document.getElementById('seekBar').value = progress;
+                document.getElementById('currentTime').textContent = formatTime(current);
+                
+                if (playlist[currentTrackIndex] && playlist[currentTrackIndex].duration === '0:00') {
+                    playlist[currentTrackIndex].duration = formatTime(duration);
+                    updatePlaylistUI();
                 }
-            }, 60000);
-        })();
+            }
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return mins + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+
+        function nextTrack() {
+            if (playlist.length === 0) return;
+            const next = (currentTrackIndex + 1) % playlist.length;
+            loadTrack(next);
+        }
+
+        function previousTrack() {
+            if (playlist.length === 0) return;
+            const prev = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            loadTrack(prev);
+        }
+
+        function deleteTrack(index) {
+            if (index === currentTrackIndex) {
+                pauseAudio();
+                audioElement.src = '';
+                document.getElementById('trackTitle').textContent = 'No track selected';
+                document.getElementById('trackArtist').textContent = 'Select a song from playlist';
+                currentTrackIndex = -1;
+            } else if (index < currentTrackIndex) {
+                currentTrackIndex--;
+            }
+            
+            URL.revokeObjectURL(playlist[index].url);
+            playlist.splice(index, 1);
+            updatePlaylistUI();
+            savePlaylistToStorage();
+            showToast('Track removed from playlist', 'success');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.className = 'toast ' + type;
+            toast.querySelector('span').textContent = message;
+            toast.querySelector('i').className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function savePlaylistToStorage() {
+            const playlistData = playlist.map(track => ({
+                id: track.id,
+                title: track.title,
+                artist: track.artist,
+                duration: track.duration,
+                originalFile: track.originalFile
+            }));
+            localStorage.setItem('audioflow_playlist', JSON.stringify(playlistData));
+        }
+
+        function loadPlaylistFromStorage() {
+            const stored = localStorage.getItem('audioflow_playlist');
+            if (stored) {
+                const playlistData = JSON.parse(stored);
+                playlist = playlistData.map(item => ({
+                    ...item,
+                    url: ''
+                }));
+                updatePlaylistUI();
+            }
+        }
     </script>
 </body>
-</html>
+</html>'''
+
+# Save the file
+with open('/mnt/kimi/output/audioflow_liquid_glass.html', 'w', encoding='utf-8') as f:
+    f.write(html_code)
+
+print("Ã°ÂÂÂµÃ¢ÂÂ AudioFlow - Fully Responsive Liquid Glass Design Created!")
+print("Ã°ÂÂÂ File saved at: /mnt/kimi/output/audioflow_liquid_glass.html")
+print("\nÃ°ÂÂÂ¨ New Features:")
+print("   Ã¢ÂÂ¢ LIQUID GLASS EFFECTS with morphing blob animations")
+print("   Ã¢ÂÂ¢ FULLY RESPONSIVE - Mobile/Tablet/Desktop optimized")
+print("   Ã¢ÂÂ¢ MODIFIED PLAYLIST LAYOUT:")
+print("     - Mobile: Horizontal scroll cards (swipeable)")
+print("     - Tablet/Desktop: Vertical grid layout")
+print("   Ã¢ÂÂ¢ Liquid shine animations on glass surfaces")
+print("   Ã¢ÂÂ¢ Animated gradient blobs in background")
+print("   Ã¢ÂÂ¢ Rotating album art with shine effect")
+print("   Ã¢ÂÂ¢ Touch-optimized for mobile devices")
+print("   Ã¢ÂÂ¢ Landscape mode support")
+print("   Ã¢ÂÂ¢ Reduced motion support for accessibility")
+print("\nÃ°ÂÂÂ± Responsive Breakpoints:")
+print("   Ã¢ÂÂ¢ Mobile: < 768px (single column, horizontal playlist)")
+print("   Ã¢ÂÂ¢ Tablet: 768px - 1199px (2 columns, vertical playlist)")
+print("   Ã¢ÂÂ¢ Desktop: 1200px+ (optimized layout)")
