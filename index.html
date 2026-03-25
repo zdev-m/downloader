@@ -9,1722 +9,529 @@
     
 </body>
 </html>
-html_code = '''<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CodeStudio - Live HTML Editor & Preview</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- CodeMirror 5 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/eclipse.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
-    <!-- JSZip -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Live Code Editor - Scrollable Preview</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-tertiary: #21262d;
-            --text-primary: #e6edf3;
-            --text-secondary: #8b949e;
-            --text-muted: #6e7681;
-            --accent: #58a6ff;
-            --accent-hover: #79c0ff;
-            --success: #238636;
-            --warning: #f0883e;
-            --error: #f85149;
-            --border: #30363d;
-            --editor-bg: #0d1117;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .light-theme {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f6f8fa;
-            --bg-tertiary: #eaeef2;
-            --text-primary: #24292f;
-            --text-secondary: #57606a;
-            --text-muted: #8c959f;
-            --accent: #0969da;
-            --accent-hover: #0550ae;
-            --editor-bg: #ffffff;
-            --border: #d0d7de;
-        }
-
-        html, body {
-            height: 100%;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+        body {
+            background: #1a1a2e;
+            font-family: 'Segoe UI', monospace;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
 
-        /* Header */
-        .header {
-            height: 60px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
+        /* Toolbar */
+        .toolbar {
+            background: #0f0f1a;
+            padding: 8px 16px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            flex-shrink: 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--accent), #a371f7);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 8px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            white-space: nowrap;
+            border-bottom: 1px solid #2a2a3a;
         }
 
-        .btn:hover {
-            background: var(--border);
-            transform: translateY(-1px);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
+        .toolbar button {
+            background: #2a2a3a;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
             color: white;
+            cursor: pointer;
+            font-size: 12px;
         }
 
-        .btn-primary:hover {
-            background: var(--accent-hover);
+        .toolbar button:hover {
+            background: #4a4a5a;
         }
 
-        .btn-success {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
+        .save-btn {
+            background: #4ecdc4 !important;
+            color: #1a1a2e !important;
+        }
+
+        .reset-btn {
+            background: #ff6b6b !important;
         }
 
         /* Main Container */
         .main-container {
-            height: calc(100vh - 60px);
             display: flex;
-            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+            gap: 2px;
+            background: #2a2a3a;
         }
 
         /* Editor Section */
         .editor-section {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            flex: 1;
-            min-height: 0;
-        }
-
-        /* Tabs - Horizontal Scroll */
-        .tabs-container {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            overflow-x: auto;
-            overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .tabs-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .tabs {
-            display: flex;
-            min-width: max-content;
-            padding: 0 10px;
-        }
-
-        .tab {
-            padding: 12px 24px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-            user-select: none;
-        }
-
-        .tab:hover {
-            color: var(--text-primary);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .tab.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-            background: rgba(88, 166, 255, 0.1);
-        }
-
-        .tab i {
-            font-size: 0.875rem;
-        }
-
-        /* Editor Container */
-        .editor-container {
-            flex: 1;
-            position: relative;
-            min-height: 0;
+            background: #1e1e2e;
+            min-width: 280px;
             overflow: hidden;
         }
 
-        .code-editor {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .tab-bar {
+            display: flex;
+            background: #0f0f1a;
+            padding: 5px 10px 0 10px;
+            gap: 3px;
+        }
+
+        .tab {
+            padding: 8px 24px;
+            background: #1e1e2e;
+            color: #888;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            font-size: 13px;
+        }
+
+        .tab.active {
+            background: #2a2a3a;
+            color: white;
+            border-bottom: 2px solid #4ecdc4;
+        }
+
+        .code-area {
+            flex: 1;
+            background: #1e1e2e;
+            overflow: auto;
+        }
+
+        textarea {
             width: 100%;
             height: 100%;
-            display: none;
+            background: #1e1e2e;
+            border: none;
+            color: #d4d4d4;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            padding: 15px;
         }
 
-        .code-editor.active {
-            display: block;
-        }
-
-        .CodeMirror {
-            height: 100% !important;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 14px;
-            line-height: 1.6;
-            background: var(--editor-bg) !important;
-        }
-
-        .CodeMirror-gutters {
-            background: var(--bg-secondary) !important;
-            border-right: 1px solid var(--border) !important;
-        }
-
-        .CodeMirror-linenumber {
-            color: var(--text-muted) !important;
-            padding: 0 12px !important;
-        }
-
-        .CodeMirror-cursor {
-            border-left: 2px solid var(--accent) !important;
-        }
-
-        .CodeMirror-selected {
-            background: rgba(88, 166, 255, 0.3) !important;
-        }
-
-        /* Preview Section */
+        /* Preview Section - SCROLLABLE */
         .preview-section {
-            height: 50%;
-            min-height: 300px;
+            flex: 1;
+            background: #2a2a3a;
             display: flex;
             flex-direction: column;
-            background: #f0f0f0;
-            border-top: 3px solid var(--border);
-        }
-
-        @media (min-width: 1024px) {
-            .main-container {
-                flex-direction: row;
-            }
-            
-            .editor-section {
-                width: 50%;
-                height: 100%;
-            }
-            
-            .preview-section {
-                width: 50%;
-                height: 100%;
-                border-top: none;
-                border-left: 3px solid var(--border);
-            }
+            min-width: 300px;
         }
 
         .preview-header {
-            height: 45px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
+            background: #0f0f1a;
+            padding: 8px 15px;
+            color: #aaa;
+            font-size: 12px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0 15px;
-            flex-shrink: 0;
-        }
-
-        .preview-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            display: flex;
             align-items: center;
-            gap: 8px;
         }
 
-        .preview-actions {
-            display: flex;
-            gap: 8px;
+        .preview-header a {
+            color: #4ecdc4;
+            text-decoration: none;
         }
 
-        .device-toggle {
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .device-toggle:hover,
-        .device-toggle.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .preview-container {
+        /* Ye hai fix — SCROLLABLE PREVIEW CONTAINER */
+        .preview-scroll-container {
             flex: 1;
-            position: relative;
             overflow: auto;
-            background: #e5e5e5;
+            background: #f5f5f5;
+            padding: 20px;
         }
 
         .preview-frame {
             width: 100%;
-            height: 100%;
-            min-height: 600px;
+            height: auto;
+            min-height: 100%;
             border: none;
             background: white;
-            display: block;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        .preview-frame.mobile {
-            width: 375px;
-            max-width: 100%;
-            margin: 0 auto;
-            height: 667px;
-            min-height: 667px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-        }
-
-        /* Console Panel */
-        .console-panel {
-            height: 150px;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            display: none;
-            flex-direction: column;
-            flex-shrink: 0;
-        }
-
-        .console-panel.active {
+        /* Console */
+        .console-section {
+            background: #0f0f1a;
+            border-top: 1px solid #2a2a3a;
+            height: 140px;
             display: flex;
+            flex-direction: column;
         }
 
         .console-header {
-            height: 35px;
-            background: var(--bg-tertiary);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
+            padding: 6px 15px;
+            background: #1a1a2e;
+            color: #aaa;
+            font-size: 11px;
+            border-bottom: 1px solid #2a2a3a;
         }
 
-        .console-title {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .console-clear {
-            padding: 4px 10px;
-            border-radius: 4px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
-
-        .console-clear:hover {
-            color: var(--text-primary);
-        }
-
-        .console-content {
+        .console-output {
             flex: 1;
             overflow-y: auto;
-            padding: 10px 15px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            padding: 8px 12px;
+            font-family: monospace;
+            font-size: 11px;
+            background: #0f0f1a;
+            color: #d4d4d4;
         }
 
-        .console-line {
-            padding: 4px 0;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            gap: 10px;
+        .console-log { color: #4ecdc4; margin: 2px 0; }
+        .console-error { color: #ff6b6b; margin: 2px 0; }
+        .console-warn { color: #ffd93d; margin: 2px 0; }
+
+        /* Resizer */
+        .resizer {
+            width: 5px;
+            background: #2a2a3a;
+            cursor: col-resize;
+        }
+        .resizer:hover {
+            background: #4ecdc4;
         }
 
-        .console-time {
-            color: var(--text-muted);
-            flex-shrink: 0;
+        .status-bar {
+            background: #0f0f1a;
+            padding: 4px 15px;
+            color: #666;
+            font-size: 10px;
+            border-top: 1px solid #2a2a3a;
         }
 
-        .console-log { color: var(--text-primary); }
-        .console-error { color: var(--error); }
-        .console-warn { color: var(--warning); }
-        .console-info { color: var(--accent); }
-
-        /* Templates Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 700px;
-            max-height: 85vh;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            border: none;
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-close:hover {
-            background: var(--error);
-            color: white;
-        }
-
-        .modal-body {
-            padding: 20px;
-            overflow-y: auto;
-            max-height: 60vh;
-        }
-
-        .template-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
-        }
-
-        .template-card {
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-            text-align: center;
-        }
-
-        .template-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        .template-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--accent), #a371f7);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .template-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            z-index: 2000;
-            max-width: 90vw;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.success { border-left: 3px solid var(--success); }
-        .toast.error { border-left: 3px solid var(--error); }
-
-        /* Loader */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
-
         ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
+            background: #1e1e2e;
         }
-
         ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header {
-                padding: 0 10px;
-            }
-            
-            .header-actions {
-                gap: 5px;
-            }
-            
-            .btn {
-                padding: 6px 10px;
-                font-size: 0.8rem;
-            }
-            
-            .btn span {
-                display: none;
-            }
-            
-            .preview-section {
-                height: 45%;
-                min-height: 250px;
-            }
-            
-            .template-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Error Message */
-        .error-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--error);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            display: none;
-            z-index: 100;
-        }
-
-        .error-message.show {
-            display: block;
+            background: #4ecdc4;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Loader -->
-    <div class="loader" id="loader">
-        <div class="loader-spinner"></div>
-        <div style="color: var(--text-secondary);">Loading CodeStudio...</div>
+    <div class="toolbar">
+        <button id="runBtn">▶ Run</button>
+        <button id="saveBtn" class="save-btn">💾 Save HTML</button>
+        <button id="resetBtn" class="reset-btn">🔄 Reset</button>
     </div>
 
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-code"></i>
-            </div>
-            <span>CodeStudio</span>
-        </div>
-        <div class="header-actions">
-            <button class="btn" onclick="toggleTheme()">
-                <i class="fas fa-moon"></i> <span>Theme</span>
-            </button>
-            <button class="btn" onclick="showTemplates()">
-                <i class="fas fa-layer-group"></i> <span>Templates</span>
-            </button>
-            <button class="btn" onclick="toggleConsole()">
-                <i class="fas fa-terminal"></i> <span>Console</span>
-            </button>
-            <button class="btn btn-success" onclick="exportCode()">
-                <i class="fas fa-download"></i> <span>Export</span>
-            </button>
-            <button class="btn btn-primary" onclick="runCode()">
-                <i class="fas fa-play"></i> <span>Run</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Container -->
     <div class="main-container">
-        <!-- Editor Section -->
+        <!-- Editor -->
         <div class="editor-section">
-            <div class="tabs-container">
-                <div class="tabs">
-                    <div class="tab active" onclick="switchTab('html')" data-tab="html">
-                        <i class="fab fa-html5" style="color: #e34c26;"></i>
-                        HTML
-                    </div>
-                    <div class="tab" onclick="switchTab('css')" data-tab="css">
-                        <i class="fab fa-css3-alt" style="color: #264de4;"></i>
-                        CSS
-                    </div>
-                    <div class="tab" onclick="switchTab('js')" data-tab="js">
-                        <i class="fab fa-js" style="color: #f0db4f;"></i>
-                        JavaScript
-                    </div>
-                </div>
+            <div class="tab-bar">
+                <div class="tab active" data-tab="html">HTML</div>
+                <div class="tab" data-tab="css">CSS</div>
+                <div class="tab" data-tab="js">JavaScript</div>
             </div>
-            
-            <div class="editor-container">
-                <div class="code-editor active" id="html-editor">
-                    <textarea id="html-code"><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Page</title>
-</head>
-<body>
-    <h1>Hello World! 🌍</h1>
-    <p>Welcome to CodeStudio - Start coding!</p>
-    <button onclick="alert('Hello!')">Click Me</button>
-</body>
-</html></textarea>
-                </div>
-                <div class="code-editor" id="css-editor">
-                    <textarea id="css-code">body {
-    font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-}
-
-button {
-    padding: 12px 24px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 25px;
-    background: white;
-    color: #667eea;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: transform 0.3s ease;
-}
-
-button:hover {
-    transform: scale(1.05);
-}</textarea>
-                </div>
-                <div class="code-editor" id="js-editor">
-                    <textarea id="js-code">// Your JavaScript code here
-console.log('Hello from CodeStudio!');
-
-// Example: Add interactivity
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Page loaded successfully!');
-});</textarea>
-                </div>
-            </div>
-            
-            <!-- Console Panel -->
-            <div class="console-panel" id="consolePanel">
-                <div class="console-header">
-                    <span class="console-title">Console</span>
-                    <button class="console-clear" onclick="clearConsole()">Clear</button>
-                </div>
-                <div class="console-content" id="consoleContent">
-                    <div class="console-line console-info">
-                        <span class="console-time">[00:00:00]</span>
-                        <span>Console ready...</span>
-                    </div>
-                </div>
+            <div class="code-area">
+                <textarea id="htmlEditor" placeholder="Write HTML here..."></textarea>
+                <textarea id="cssEditor" placeholder="Write CSS here..." style="display: none;"></textarea>
+                <textarea id="jsEditor" placeholder="Write JavaScript here..." style="display: none;"></textarea>
             </div>
         </div>
 
-        <!-- Preview Section -->
+        <div class="resizer" id="resizer"></div>
+
+        <!-- Preview - SCROLLABLE -->
         <div class="preview-section">
             <div class="preview-header">
-                <div class="preview-title">
-                    <i class="fas fa-eye"></i>
-                    Live Preview
-                </div>
-                <div class="preview-actions">
-                    <button class="device-toggle active" onclick="setDevice('desktop', this)">
-                        <i class="fas fa-desktop"></i> Desktop
-                    </button>
-                    <button class="device-toggle" onclick="setDevice('mobile', this)">
-                        <i class="fas fa-mobile-alt"></i> Mobile
-                    </button>
-                    <button class="device-toggle" onclick="refreshPreview()">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                </div>
+                <span>📱 Live Preview (Scroll to see full website)</span>
+                <a href="#" id="openNewTab">🔗 Open in new tab</a>
             </div>
-            <div class="preview-container" id="previewContainer">
-                <iframe id="preview" class="preview-frame"></iframe>
-                <div class="error-message" id="errorMessage">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                    <div>Preview Error</div>
-                    <small id="errorText">Check console for details</small>
-                </div>
+            <div class="preview-scroll-container" id="previewScrollContainer">
+                <iframe id="preview" class="preview-frame" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals"></iframe>
             </div>
-        </div>
-    </div>
-
-    <!-- Templates Modal -->
-    <div class="modal-overlay" id="templatesModal" onclick="hideTemplates(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3 class="modal-title">Choose a Template</h3>
-                <button class="modal-close" onclick="hideTemplates()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="template-grid">
-                    <div class="template-card" onclick="loadTemplate('blank')">
-                        <div class="template-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                            <i class="fas fa-file"></i>
-                        </div>
-                        <div class="template-name">Blank</div>
-                    </div>
-                    <div class="template-card" onclick="loadTemplate('landing')">
-                        <div class="template-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <div class="template-name">Landing Page</div>
-                    </div>
-                    <div class="template-card" onclick="loadTemplate('dashboard')">
-                        <div class="template-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="template-name">Dashboard</div>
-                    </div>
-                    <div class="template-card" onclick="loadTemplate('portfolio')">
-                        <div class="template-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="template-name">Portfolio</div>
-                    </div>
-                    <div class="template-card" onclick="loadTemplate('form')">
-                        <div class="template-icon" style="background: linear-gradient(135deg, #fa709a, #fee140);">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="template-name">Contact Form</div>
-                    </div>
-                    <div class="template-card" onclick="loadTemplate('ecommerce')">
-                        <div class="template-icon" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="template-name">E-commerce</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span>Message</span>
-    </div>
-
-    <script>
-        // Global Variables
-        let htmlEditor, cssEditor, jsEditor;
-        let currentDevice = 'desktop';
-        let updateTimeout;
-
-        // Templates Data
-        const templates = {
-            blank: {
-                html: `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blank Page</title>
-</head>
-<body>
-    <h1>Start Coding!</h1>
-</body>
-</html>`,
-                css: `body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-}`,
-                js: '// Your code here'
-            },
-            landing: {
-                html: `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">Brand</div>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section class="hero">
-        <h1>Welcome to Our Product</h1>
-        <p>The best solution for your needs</p>
-        <button class="cta">Get Started</button>
-    </section>
-</body>
-</html>`,
-                css: `* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Segoe UI', sans-serif; }
-header {
-    background: #333;
-    color: white;
-    padding: 1rem 2rem;
-}
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.logo { font-size: 1.5rem; font-weight: bold; }
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-}
-nav a { color: white; text-decoration: none; }
-.hero {
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-.hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-.cta {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    background: white;
-    color: #667eea;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    margin-top: 2rem;
-}`,
-                js: `document.querySelector('.cta').addEventListener('click', () => {
-    alert('Welcome! This is a landing page template.');
-});`
-            },
-            dashboard: {
-                html: `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
-    <div class="dashboard">
-        <aside class="sidebar">
-            <h2>Dashboard</h2>
-            <ul>
-                <li class="active">Overview</li>
-                <li>Analytics</li>
-                <li>Reports</li>
-                <li>Settings</li>
-            </ul>
-        </aside>
-        <main class="main-content">
-            <h1>Dashboard Overview</h1>
-            <div class="cards">
-                <div class="card">
-                    <h3>Users</h3>
-                    <p class="number">1,234</p>
-                </div>
-                <div class="card">
-                    <h3>Revenue</h3>
-                    <p class="number">$12,345</p>
-                </div>
-                <div class="card">
-                    <h3>Orders</h3>
-                    <p class="number">567</p>
-                </div>
-            </div>
-        </main>
-    </div>
-</body>
-</html>`,
-                css: `* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f5f7fa;
-}
-.dashboard {
-    display: flex;
-    min-height: 100vh;
-}
-.sidebar {
-    width: 250px;
-    background: #2c3e50;
-    color: white;
-    padding: 2rem;
-}
-.sidebar h2 { margin-bottom: 2rem; }
-.sidebar ul { list-style: none; }
-.sidebar li {
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.sidebar li:hover, .sidebar li.active {
-    background: rgba(255,255,255,0.1);
-}
-.main-content {
-    flex: 1;
-    padding: 2rem;
-}
-.main-content h1 {
-    margin-bottom: 2rem;
-    color: #2c3e50;
-}
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-}
-.card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-.card h3 {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
-.number {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #2c3e50;
-}`,
-                js: `console.log('Dashboard loaded');
-setInterval(() => {
-    const numbers = document.querySelectorAll('.number');
-    numbers.forEach(num => {
-        num.style.opacity = '0.5';
-        setTimeout(() => num.style.opacity = '1', 200);
-    });
-}, 5000);`
-            },
-            portfolio: {
-                html: `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-</head>
-<body>
-    <header>
-        <h1>John Doe</h1>
-        <p>Web Developer & Designer</p>
-    </header>
-    <section class="about">
-        <h2>About Me</h2>
-        <p>I create beautiful and functional websites.</p>
-    </section>
-    <section class="projects">
-        <h2>Projects</h2>
-        <div class="project-grid">
-            <div class="project-card">
-                <h3>Project 1</h3>
-                <p>Web Application</p>
-            </div>
-            <div class="project-card">
-                <h3>Project 2</h3>
-                <p>Mobile App</p>
-            </div>
-        </div>
-    </section>
-    <section class="contact">
-        <h2>Contact</h2>
-        <p>email@example.com</p>
-    </section>
-</body>
-</html>`,
-                css: `body {
-    font-family: 'Segoe UI', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-header {
-    text-align: center;
-    padding: 3rem 0;
-    border-bottom: 2px solid #eee;
-    margin-bottom: 2rem;
-}
-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
-header p {
-    color: #666;
-    font-size: 1.2rem;
-}
-section { margin-bottom: 3rem; }
-h2 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
-}
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-.project-card {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-}
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-}
-.contact {
-    text-align: center;
-    padding: 2rem;
-    background: #2c3e50;
-    color: white;
-    border-radius: 8px;
-}`,
-                js: `console.log('Portfolio loaded');
-document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', () => {
-        alert('Project details would open here!');
-    });
-});`
-            },
-            form: {
-                html: `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Form</title>
-</head>
-<body>
-    <div class="container">
-        <form class="contact-form">
-            <h2>Contact Us</h2>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" placeholder="Your name">
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="your@email.com">
-            </div>
-            <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" rows="5" placeholder="Your message..."></textarea>
-            </div>
-            <button type="submit">Send Message</button>
-        </form>
-    </div>
-</body>
-</html>`,
-                css: `body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-}
-.container {
-    width: 100%;
-    max-width: 500px;
-    padding: 20px;
-}
-.contact-form {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-}
-.contact-form h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 1.5rem;
-}
-.form-group {
-    margin-bottom: 1.5rem;
-}
-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #555;
-    font-weight: 500;
-}
-input, textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-input:focus, textarea:focus {
-    outline: none;
-    border-color: #667eea;
-}
-button[type="submit"] {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-button[type="submit"]:hover {
-    transform: translateY(-2px);
-}`,
-                js: `document.querySelector('.contact-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-    
-    if (name && email && message) {
-        alert('Thank you for your message, ' + name + '!');
-        console.log('Form submitted:', { name, email, message });
-    } else {
-        alert('Please fill in all fields.');
-    }
-});`
-            },
-            ecommerce: {
-                html: `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
-</head>
-<body>
-    <header>
-        <h1>My Shop</h1>
-        <div class="cart">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="cart-count">0</span>
-        </div>
-    </header>
-    <div class="products">
-        <div class="product-card">
-            <div class="product-image">Product 1</div>
-            <h3>Awesome Product</h3>
-            <p class="price">$29.99</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <div class="product-image">Product 2</div>
-            <h3>Cool Item</h3>
-            <p class="price">$49.99</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-        <div class="product-card">
-            <div class="product-image">Product 3</div>
-            <h3>Best Seller</h3>
-            <p class="price">$19.99</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-    </div>
-</body>
-</html>`,
-                css: `* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f5f5f5;
-}
-header {
-    background: #2c3e50;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.cart {
-    position: relative;
-    cursor: pointer;
-}
-.cart i { font-size: 1.5rem; }
-.cart-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #e74c3c;
-    color: white;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: bold;
-}
-.products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.product-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-.product-card:hover {
-    transform: translateY(-5px);
-}
-.product-image {
-    height: 200px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-.product-card h3 {
-    padding: 1rem;
-    color: #2c3e50;
-}
-.price {
-    padding: 0 1rem;
-    color: #e74c3c;
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-.add-to-cart {
-    width: calc(100% - 2rem);
-    margin: 1rem;
-    padding: 12px;
-    background: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.add-to-cart:hover {
-    background: #229954;
-}`,
-                js: `let cartCount = 0;
-document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', function() {
-        cartCount++;
-        document.querySelector('.cart-count').textContent = cartCount;
-        this.textContent = 'Added!';
-        this.style.background = '#229954';
-        setTimeout(() => {
-            this.textContent = 'Add to Cart';
-            this.style.background = '#27ae60';
-        }, 1000);
-        console.log('Added to cart. Total items:', cartCount);
-    });
-});
-document.querySelector('.cart').addEventListener('click', () => {
-    if (cartCount > 0) {
-        alert('Cart (' + cartCount + ' items) - Checkout would open here');
-    } else {
-        alert('Your cart is empty!');
-    }
-});`
-            }
-        };
-
-        // Initialize
-        window.onload = function() {
-            initEditors();
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-                runCode();
-            }, 500);
-        };
-
-        // Initialize CodeMirror Editors
-        function initEditors() {
-            const theme = document.body.classList.contains('light-theme') ? 'eclipse' : 'dracula';
             
-            const commonOptions = {
-                lineNumbers: true,
-                autoCloseBrackets: true,
-                matchBrackets: true,
-                styleActiveLine: true,
-                lineWrapping: true,
-                tabSize: 2,
-                indentWithTabs: false,
-                theme: theme,
-                extraKeys: {
-                    "Ctrl-S": function() { runCode(); return false; },
-                    "Cmd-S": function() { runCode(); return false; },
-                    "Ctrl-E": function() { exportCode(); return false; },
-                    "Cmd-E": function() { exportCode(); return false; }
-                }
-            };
+            <!-- Console -->
+            <div class="console-section">
+                <div class="console-header">📋 Console Output</div>
+                <div class="console-output" id="consoleOutput">
+                    <div style="color: #666;">→ Ready. Click Run to start.</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            htmlEditor = CodeMirror.fromTextArea(document.getElementById('html-code'), {
-                mode: 'xml',
-                htmlMode: true,
-                ...commonOptions
-            });
+    <div class="status-bar" id="statusBar">Ready | Auto-saved</div>
 
-            cssEditor = CodeMirror.fromTextArea(document.getElementById('css-code'), {
-                mode: 'css',
-                ...commonOptions
-            });
-
-            jsEditor = CodeMirror.fromTextArea(document.getElementById('js-code'), {
-                mode: 'javascript',
-                ...commonOptions
-            });
-
-            // Auto-run on change (with debounce)
-            const onChange = () => {
-                clearTimeout(updateTimeout);
-                updateTimeout = setTimeout(runCode, 1000);
-            };
-
-            htmlEditor.on('change', onChange);
-            cssEditor.on('change', onChange);
-            jsEditor.on('change', onChange);
-        }
-
-        // Switch Tab
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('.tab[data-tab="' + tab + '"]').classList.add('active');
-
-            document.querySelectorAll('.code-editor').forEach(e => e.classList.remove('active'));
-            document.getElementById(tab + '-editor').classList.add('active');
-
-            setTimeout(() => {
-                if (tab === 'html') htmlEditor.refresh();
-                if (tab === 'css') cssEditor.refresh();
-                if (tab === 'js') jsEditor.refresh();
-            }, 10);
-        }
-
-        // Run Code - Using document.write method (most reliable)
-        function runCode() {
-            try {
-                const html = htmlEditor.getValue();
-                const css = cssEditor.getValue();
-                const js = jsEditor.getValue();
-                
-                // Create complete HTML document
-                const fullCode = `<!DOCTYPE html>
+    <script>
+        const htmlEditor = document.getElementById('htmlEditor');
+        const cssEditor = document.getElementById('cssEditor');
+        const jsEditor = document.getElementById('jsEditor');
+        const preview = document.getElementById('preview');
+        const consoleOutput = document.getElementById('consoleOutput');
+        const runBtn = document.getElementById('runBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const openNewTab = document.getElementById('openNewTab');
+        const statusBar = document.getElementById('statusBar');
+        const tabs = document.querySelectorAll('.tab');
+        
+        let activeTab = 'html';
+        
+        // Default templates
+        const defaultHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview</title>
-    <style>${css}</style>
+    <title>My Website</title>
 </head>
 <body>
-    ${html}
+    <div style="max-width: 800px; margin: 0 auto; padding: 40px; font-family: 'Segoe UI', sans-serif;">
+        <h1 style="color: #4ecdc4;">✨ Welcome!</h1>
+        <p>This is a scrollable preview. Scroll down to see more content 👇</p>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f0f0f0; border-radius: 12px;">
+            <h3>Section 1</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f0f0f0; border-radius: 12px;">
+            <h3>Section 2</h3>
+            <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f0f0f0; border-radius: 12px;">
+            <h3>Section 3</h3>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f0f0f0; border-radius: 12px;">
+            <h3>Section 4</h3>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #ff6b6b20; border-radius: 12px; text-align: center;">
+            <button onclick="alert('Hello!')" style="padding: 12px 24px; background: #4ecdc4; border: none; border-radius: 8px; cursor: pointer;">Click Me</button>
+        </div>
+        
+        <p style="margin-top: 60px; text-align: center; color: #666;">Scroll karke dekho — puri website dikh rahi hai! 🎉</p>
+    </div>
+    
     <script>
-        // Console override for iframe
-        const originalLog = console.log;
-        const originalError = console.error;
-        const originalWarn = console.warn;
-        
-        console.log = function(...args) {
-            window.parent.postMessage({type: 'console', method: 'log', args: args}, '*');
-            originalLog.apply(console, args);
-        };
-        
-        console.error = function(...args) {
-            window.parent.postMessage({type: 'console', method: 'error', args: args}, '*');
-            originalError.apply(console, args);
-        };
-        
-        console.warn = function(...args) {
-            window.parent.postMessage({type: 'console', method: 'warn', args: args}, '*');
-            originalWarn.apply(console, args);
-        };
-        
-        window.onerror = function(msg, url, line) {
-            window.parent.postMessage({type: 'console', method: 'error', args: [msg + ' (line ' + line + ')']}, '*');
-            return false;
-        };
-        
-        ${js}
+        console.log('Website loaded! Scroll to see full content.');
     <\/script>
 </body>
 </html>`;
-                
-                const preview = document.getElementById('preview');
-                const previewDoc = preview.contentDocument || preview.contentWindow.document;
-                
-                // Clear and write new content
-                previewDoc.open();
-                previewDoc.write(fullCode);
-                previewDoc.close();
-                
-                hideError();
-                
-            } catch (error) {
-                showError(error.message);
-                console.error('Preview error:', error);
+
+        const defaultCSS = `/* Your CSS here */`;
+        const defaultJS = `// Your JavaScript here`;
+        
+        function switchTab(tab) {
+            activeTab = tab;
+            tabs.forEach(t => {
+                if (t.dataset.tab === tab) t.classList.add('active');
+                else t.classList.remove('active');
+            });
+            htmlEditor.style.display = tab === 'html' ? 'block' : 'none';
+            cssEditor.style.display = tab === 'css' ? 'block' : 'none';
+            jsEditor.style.display = tab === 'js' ? 'block' : 'none';
+        }
+        
+        function generateCompleteHTML() {
+            let html = htmlEditor.value;
+            const css = cssEditor.value;
+            const js = jsEditor.value;
+            
+            if (!html.trim()) {
+                return `<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><h2>📝 Write HTML in the editor!</h2></div>`;
             }
+            
+            if (css.trim() || js.trim()) {
+                if (html.includes('</body>')) {
+                    if (css.trim() && !html.includes('<style>')) {
+                        html = html.replace('</head>', `<style>\n${css}\n</style>\n</head>`);
+                    }
+                    if (js.trim()) {
+                        html = html.replace('</body>', `<script>\n${js}\n<\/script>\n</body>`);
+                    }
+                } else {
+                    html = `<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${css.trim() ? `<style>\n${css}\n</style>` : ''}</head>
+<body>${html}${js.trim() ? `<script>\n${js}\n<\/script>` : ''}</body>
+</html>`;
+                }
+            }
+            return html;
         }
-
-        // Show/Hide Error
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            document.getElementById('errorText').textContent = message;
-            errorDiv.classList.add('show');
+        
+        function updatePreview() {
+            const fullHTML = generateCompleteHTML();
+            const previewDoc = preview.contentWindow.document;
+            previewDoc.open();
+            previewDoc.write(fullHTML);
+            previewDoc.close();
+            
+            consoleOutput.innerHTML = '<div style="color: #666;">→ Console output will appear here...</div>';
+            statusBar.textContent = `Updated: ${new Date().toLocaleTimeString()} | Auto-saved`;
+            
+            localStorage.setItem('savedHTML', htmlEditor.value);
+            localStorage.setItem('savedCSS', cssEditor.value);
+            localStorage.setItem('savedJS', jsEditor.value);
         }
-
-        function hideError() {
-            document.getElementById('errorMessage').classList.remove('show');
+        
+        function saveAsHTML() {
+            const fullHTML = generateCompleteHTML();
+            const blob = new Blob([fullHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `website-${Date.now()}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            statusBar.textContent = `Saved! ✅`;
+            setTimeout(() => statusBar.textContent = `Ready | Auto-saved`, 2000);
         }
-
-        // Listen for messages from iframe
-        window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'console') {
-                addToConsole(event.data.method, event.data.args.join(' '));
+        
+        function resetToDefault() {
+            htmlEditor.value = defaultHTML;
+            cssEditor.value = defaultCSS;
+            jsEditor.value = defaultJS;
+            updatePreview();
+            statusBar.textContent = `Reset to default ✅`;
+            setTimeout(() => statusBar.textContent = `Ready | Auto-saved`, 2000);
+        }
+        
+        function openInNewTab() {
+            const fullHTML = generateCompleteHTML();
+            const blob = new Blob([fullHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+        
+        function loadSavedData() {
+            const savedHTML = localStorage.getItem('savedHTML');
+            const savedCSS = localStorage.getItem('savedCSS');
+            const savedJS = localStorage.getItem('savedJS');
+            htmlEditor.value = savedHTML || defaultHTML;
+            cssEditor.value = savedCSS || defaultCSS;
+            jsEditor.value = savedJS || defaultJS;
+        }
+        
+        let autoSaveTimeout;
+        function autoSave() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                localStorage.setItem('savedHTML', htmlEditor.value);
+                localStorage.setItem('savedCSS', cssEditor.value);
+                localStorage.setItem('savedJS', jsEditor.value);
+            }, 1000);
+        }
+        
+        // Console capture
+        function captureConsole() {
+            const originalLog = console.log;
+            const originalError = console.error;
+            const originalWarn = console.warn;
+            
+            console.log = function(...args) {
+                const msg = args.join(' ');
+                const div = document.createElement('div');
+                div.className = 'console-log';
+                div.textContent = `→ ${msg}`;
+                consoleOutput.appendChild(div);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                originalLog.apply(console, args);
+            };
+            
+            console.error = function(...args) {
+                const msg = args.join(' ');
+                const div = document.createElement('div');
+                div.className = 'console-error';
+                div.textContent = `❌ ${msg}`;
+                consoleOutput.appendChild(div);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                originalError.apply(console, args);
+            };
+            
+            console.warn = function(...args) {
+                const msg = args.join(' ');
+                const div = document.createElement('div');
+                div.className = 'console-warn';
+                div.textContent = `⚠️ ${msg}`;
+                consoleOutput.appendChild(div);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                originalWarn.apply(console, args);
+            };
+        }
+        
+        // Resizer
+        let isResizing = false;
+        const resizer = document.getElementById('resizer');
+        const editorSection = document.querySelector('.editor-section');
+        const previewSection = document.querySelector('.preview-section');
+        
+        resizer.addEventListener('mousedown', () => isResizing = true);
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+            const container = document.querySelector('.main-container');
+            const rect = container.getBoundingClientRect();
+            const newWidth = ((e.clientX - rect.left) / rect.width) * 100;
+            if (newWidth > 20 && newWidth < 80) {
+                editorSection.style.flex = `${newWidth}`;
+                previewSection.style.flex = `${100 - newWidth}`;
             }
         });
-
-        // Add to Console
-        function addToConsole(type, message) {
-            const consoleContent = document.getElementById('consoleContent');
-            const time = new Date().toLocaleTimeString();
-            
-            const line = document.createElement('div');
-            line.className = 'console-line console-' + type;
-            line.innerHTML = '<span class="console-time">[' + time + ']</span><span>' + message + '</span>';
-            
-            consoleContent.appendChild(line);
-            consoleContent.scrollTop = consoleContent.scrollHeight;
-        }
-
-        // Clear Console
-        function clearConsole() {
-            document.getElementById('consoleContent').innerHTML = '';
-        }
-
-        // Toggle Console
-        function toggleConsole() {
-            const panel = document.getElementById('consolePanel');
-            panel.classList.toggle('active');
-        }
-
-        // Set Device
-        function setDevice(device, btn) {
-            currentDevice = device;
-            const preview = document.getElementById('preview');
-            
-            // Update active state
-            document.querySelectorAll('.device-toggle').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            
-            if (device === 'mobile') {
-                preview.classList.add('mobile');
-            } else {
-                preview.classList.remove('mobile');
-            }
-            
-            // Re-run to adjust
-            setTimeout(runCode, 100);
-        }
-
-        // Refresh Preview
-        function refreshPreview() {
-            runCode();
-            showToast('Preview refreshed!', 'success');
-        }
-
-        // Toggle Theme
-        function toggleTheme() {
-            document.body.classList.toggle('light-theme');
-            const isLight = document.body.classList.contains('light-theme');
-            const theme = isLight ? 'eclipse' : 'dracula';
-            
-            htmlEditor.setOption('theme', theme);
-            cssEditor.setOption('theme', theme);
-            jsEditor.setOption('theme', theme);
-            
-            showToast(isLight ? 'Light theme activated!' : 'Dark theme activated!', 'success');
-        }
-
-        // Show/Hide Templates
-        function showTemplates() {
-            document.getElementById('templatesModal').classList.add('active');
-        }
-
-        function hideTemplates(event) {
-            if (!event || event.target.id === 'templatesModal') {
-                document.getElementById('templatesModal').classList.remove('active');
-            }
-        }
-
-        // Load Template
-        function loadTemplate(name) {
-            const template = templates[name];
-            if (template) {
-                htmlEditor.setValue(template.html);
-                cssEditor.setValue(template.css);
-                jsEditor.setValue(template.js);
-                
-                hideTemplates();
-                runCode();
-                showToast(name.charAt(0).toUpperCase() + name.slice(1) + ' template loaded!', 'success');
-            }
-        }
-
-        // Export Code
-        function exportCode() {
-            const zip = new JSZip();
-            zip.file('index.html', htmlEditor.getValue());
-            zip.file('style.css', cssEditor.getValue());
-            zip.file('script.js', jsEditor.getValue());
-            
-            zip.generateAsync({ type: 'blob' }).then(content => {
-                saveAs(content, 'codestudio-project.zip');
-                showToast('Project exported successfully!', 'success');
-            });
-        }
-
-        // Show Toast
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.className = 'toast ' + type;
-            toast.querySelector('span').textContent = message;
-            toast.querySelector('i').className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-            
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
+        document.addEventListener('mouseup', () => isResizing = false);
+        
+        // Events
+        runBtn.addEventListener('click', updatePreview);
+        saveBtn.addEventListener('click', saveAsHTML);
+        resetBtn.addEventListener('click', resetToDefault);
+        openNewTab.addEventListener('click', (e) => { e.preventDefault(); openInNewTab(); });
+        
+        htmlEditor.addEventListener('input', () => { autoSave(); updatePreview(); });
+        cssEditor.addEventListener('input', () => { autoSave(); updatePreview(); });
+        jsEditor.addEventListener('input', () => { autoSave(); updatePreview(); });
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveAsHTML(); }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r') { e.preventDefault(); updatePreview(); }
+        });
+        
+        captureConsole();
+        loadSavedData();
+        switchTab('html');
+        updatePreview();
+        
+        // Iframe load handler
+        preview.addEventListener('load', () => {
+            try {
+                const iframeWindow = preview.contentWindow;
+                iframeWindow.console = console;
+            } catch(e) {}
+        });
     </script>
 </body>
-</html>'''
-
-# Save the file
-with open('/mnt/kimi/output/codestudio_fixed_preview.html', 'w', encoding='utf-8') as f:
-    f.write(html_code)
-
-print("✅ CodeStudio - LIVE PREVIEW FIXED!")
-print("📁 File saved at: /mnt/kimi/output/codestudio_fixed_preview.html")
-print("\n🔧 MAJOR FIXES:")
-print("   1. ✅ Removed iframe sandbox (blob URL issue fixed)")
-print("   2. ✅ Using document.write() method (most reliable)")
-print("   3. ✅ PostMessage for console logs from iframe")
-print("   4. ✅ Proper error handling with user feedback")
-print("   5. ✅ Auto-refresh on code change (1 second debounce)")
-print("\n📱 Features:")
-print("   • Horizontal scroll tabs (swipe on mobile)")
-print("   • Easy paste (Ctrl+V works perfectly)")
-print("   • Full website preview (no sandbox restrictions)")
-print("   • Desktop/Mobile toggle")
-print("   • 6 Templates included")
-print("   • Export as ZIP")
-print("\n🎯 How to test:")
-print("   1. Open file in browser")
-print("   2. Click 'Run' button or press Ctrl+S")
-print("   3. Preview should show instantly!")
+</html>
