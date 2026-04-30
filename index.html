@@ -29,7 +29,813 @@
     body {
       background: linear-gradient(145deg, #0a0c10 0%, #11161f 100%);
       font-family: 'Inter', sans-serif;
+      min-height: <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+  <title>Zee Vault | All Embed Video Downloader</title>
+  <!-- Google Fonts + Font Awesome for icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #0a0c10 0%, #11161f 100%);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* subtle animated gradient overlay for depth */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(183, 125, 255, 0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 60%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* main glass card - now borderless */
+    .downloader-card {
+      max-width: 1300px;
+      width: 100%;
+      background: rgba(18, 22, 32, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 2.5rem;
+      border: none; /* borderless */
+      box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.03);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .downloader-card::after {
+      content: "";
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(183, 125, 255, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* header with refined spacing */
+    .hero {
+      padding: 2.2rem 2.5rem 1.2rem 2.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF, #A9C9FF, #FFD9B5);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero h1 i {
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      color: #f0c0ff;
+      font-size: 2.2rem;
+      text-shadow: 0 0 10px #b77dff;
+    }
+
+    .glow-text {
+      font-size: 0.9rem;
+      color: #8e9aaf;
+      margin-top: 0.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .glow-text span {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(4px);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* main content splits nicely */
+    .content {
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* input area - borderless glass */
+    .input-group {
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 3rem;
+      padding: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      border: none; /* borderless */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .input-group:focus-within {
+      box-shadow: 0 0 25px rgba(183, 125, 255, 0.35);
+    }
+
+    .input-group i.fa-link {
+      font-size: 1.3rem;
+      color: #b77dff;
+      margin-left: 1.4rem;
+    }
+
+    #videoUrl {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 1rem 0.5rem;
+      font-size: 1rem;
+      color: #f0f3fc;
+      font-weight: 500;
+      outline: none;
+      font-family: 'Inter', monospace;
+      letter-spacing: -0.2px;
+    }
+
+    #videoUrl::placeholder {
+      color: #5f6c84;
+      font-weight: 400;
+    }
+
+    /* paste icon button inside input group */
+    .paste-btn {
+      background: transparent;
+      border: none;
+      color: #b77dff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      margin-right: 0.2rem;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .paste-btn:hover {
+      color: #d8b4ff;
+      transform: scale(1.1);
+    }
+
+    /* analyze button now separate, full width */
+    .analyze-btn {
+      background: linear-gradient(105deg, #8b5cf6, #c084fc);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 3rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
+      letter-spacing: 0.2px;
+      margin-top: 0.2rem;
+    }
+
+    .analyze-btn:hover {
+      transform: scale(0.98);
+      background: linear-gradient(105deg, #7c4dff, #b06eff);
+      box-shadow: 0 6px 18px rgba(139, 92, 246, 0.6);
+    }
+
+    /* supported platforms chips */
+    .supported {
+      margin-top: 0.3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.75rem;
+      color: #8d99ae;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(200, 132, 252, 0.12);
+      border-radius: 40px;
+      padding: 0.3rem 1.2rem;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      white-space: nowrap;
+    }
+
+    /* preview & download section as separate glass panel - borderless */
+    .preview-section {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 2rem;
+      border: none; /* borderless */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      padding: 1.5rem;
+      display: none; /* controlled by JS */
+    }
+
+    .preview-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .video-preview {
+      background: #0b0e14;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
+    }
+
+    iframe, #videoPlayer {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 1.5rem;
+    }
+
+    .info-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      padding: 0.4rem 0.8rem;
+    }
+
+    .video-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #eef2ff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .download-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .dl-btn {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: none; /* borderless */
+      padding: 0.65rem 1.4rem;
+      border-radius: 2.5rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #e2e8ff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .dl-btn.primary {
+      background: linear-gradient(115deg, #f43f5e, #ec489a);
+      color: white;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+    }
+
+    .dl-btn.primary:hover {
+      background: linear-gradient(115deg, #e11d48, #db2777);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(236, 72, 153, 0.5);
+    }
+
+    .dl-btn.secondary {
+      background: rgba(45, 55, 72, 0.7);
+    }
+
+    .dl-btn.secondary:hover {
+      background: #334155;
+    }
+
+    .error-message {
+      background: rgba(255, 80, 80, 0.15);
+      border-left: 4px solid #f43f5e;
+      padding: 1rem 1.3rem;
+      border-radius: 1.2rem;
+      color: #ffb4a2;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .loader {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.7rem;
+      padding: 1.2rem;
+      color: #5a6782;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      z-index: 1;
+      letter-spacing: 0.3px;
+    }
+
+    /* responsive refinements */
+    @media (max-width: 768px) {
+      body {
+        padding: 0.8rem;
+      }
+      .hero {
+        padding: 1.8rem 1.5rem 1rem 1.5rem;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .content {
+        padding: 1.5rem;
+      }
+      .input-group {
+        flex-wrap: wrap;
+        border-radius: 2rem;
+      }
+      #videoUrl {
+        min-width: 100%;
+        order: -1;
+        padding: 0.8rem 0.5rem;
+      }
+      .paste-btn {
+        order: 1;
+      }
+      .analyze-btn {
+        width: 100%;
+        border-radius: 2rem;
+      }
+      .info-panel {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .download-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .glow-text {
+        gap: 10px;
+        font-size: 0.7rem;
+      }
+      .badge {
+        padding: 0.2rem 0.8rem;
+        font-size: 0.65rem;
+      }
+      .dl-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="downloader-card">
+    <!-- header region -->
+    <div class="hero">
+      <h1>
+        <i class="fas fa-cloud-arrow-down"></i> 
+        Zee Vault
+      </h1>
+      <div class="glow-text">
+        <span><i class="fas fa-video"></i> All Embed Video Downloader</span>
+        <span><i class="fas fa-bolt"></i> 4K | HD | MP4</span>
+        <span><i class="fas fa-globe"></i> 50+ platforms support</span>
+      </div>
+    </div>
+
+    <!-- main interactive area -->
+    <div class="content">
+      <!-- input group with paste icon but NO button inside -->
+      <div class="input-group">
+        <i class="fas fa-link"></i>
+        <input type="text" id="videoUrl" placeholder="Paste any video link: YouTube, Instagram, Facebook, Twitter, Vimeo, Dailymotion, TikTok, Reddit, Twitch..." autocomplete="off" />
+        <button class="paste-btn" id="pasteBtn" title="Paste from clipboard"><i class="fas fa-paste"></i></button>
+      </div>
+
+      <!-- Analyze button placed separately below -->
+      <button class="analyze-btn" id="fetchBtn"><i class="fas fa-magic"></i> Analyze</button>
+
+      <div class="supported">
+        <div class="badge"><i class="fab fa-youtube"></i> YouTube</div>
+        <div class="badge"><i class="fab fa-instagram"></i> Instagram</div>
+        <div class="badge"><i class="fab fa-facebook"></i> FB</div>
+        <div class="badge"><i class="fab fa-twitter"></i> X/Twitter</div>
+        <div class="badge"><i class="fab fa-vimeo"></i> Vimeo</div>
+        <div class="badge"><i class="fab fa-tiktok"></i> TikTok</div>
+        <div class="badge"><i class="fab fa-reddit"></i> Reddit</div>
+        <div class="badge"><i class="fas fa-play-circle"></i> Dailymotion + more</div>
+      </div>
+
+      <!-- dynamic result pane -->
+      <div id="resultArea" class="preview-section">
+        <div class="preview-card">
+          <div class="video-preview" id="videoPreviewContainer">
+            <div style="color:#6c7a91; text-align:center; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+              <i class="fas fa-film" style="font-size:2rem; opacity:0.6;"></i>
+              <span>Preview ready</span>
+            </div>
+          </div>
+          <div class="info-panel">
+            <div class="video-title" id="videoTitleDisplay">
+              <i class="fas fa-file-video"></i> <span id="videoTitleText">Video Title</span>
+            </div>
+            <div class="download-actions" id="downloadActions">
+              <!-- filled dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="errorBox" style="display: none;" class="error-message"></div>
+    </div>
+
+    <div class="footer-note">
+      <i class="fas fa-shield-alt"></i> Secure & smart · Direct video links · Supports embed sources & direct MP4
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // DOM elements
+      const urlInput = document.getElementById('videoUrl');
+      const fetchBtn = document.getElementById('fetchBtn');
+      const pasteBtn = document.getElementById('pasteBtn');
+      const resultArea = document.getElementById('resultArea');
+      const errorBox = document.getElementById('errorBox');
+      const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+      const videoTitleTextSpan = document.getElementById('videoTitleText');
+      const downloadActionsDiv = document.getElementById('downloadActions');
+
+      // Paste from clipboard functionality
+      pasteBtn.addEventListener('click', async () => {
+        try {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            urlInput.value = text;
+            // optional small feedback
+            pasteBtn.style.color = '#d8b4ff';
+            setTimeout(() => { pasteBtn.style.color = '#b77dff'; }, 300);
+          }
+        } catch (err) {
+          alert('Unable to paste from clipboard. Please paste manually.');
+        }
+      });
+
+      function showError(msg) {
+        errorBox.style.display = 'block';
+        errorBox.innerHTML = `<i class="fas fa-circle-exclamation"></i> ${msg}`;
+        resultArea.style.display = 'none';
+      }
+
+      function hideError() {
+        errorBox.style.display = 'none';
+      }
+
+      function setLoading(loading) {
+        if (loading) {
+          fetchBtn.disabled = true;
+          fetchBtn.innerHTML = `<span class="loader"></span> Analyzing...`;
+        } else {
+          fetchBtn.disabled = false;
+          fetchBtn.innerHTML = `<i class="fas fa-magic"></i> Analyze`;
+        }
+      }
+
+      async function extractVideoInfo(videoUrl) {
+        let rawUrl = videoUrl.trim();
+        if (!rawUrl) throw new Error("Please enter a valid URL");
+
+        let result = {
+          embedUrl: null,
+          directDownloadUrl: null,
+          title: "Video Preview",
+          site: "unknown"
+        };
+
+        // YouTube
+        let ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        let ytMatch = rawUrl.match(ytRegex);
+        if (ytMatch) {
+          let vid = ytMatch[1];
+          result.embedUrl = `https://www.youtube.com/embed/${vid}?autoplay=0&rel=0`;
+          result.title = "YouTube Video";
+          result.site = "youtube";
+          return result;
+        }
+
+        // Vimeo
+        let vimeoRegex = /vimeo\.com\/(\d+)/;
+        let vMatch = rawUrl.match(vimeoRegex);
+        if (vMatch) {
+          result.embedUrl = `https://player.vimeo.com/video/${vMatch[1]}`;
+          result.title = "Vimeo Video";
+          result.site = "vimeo";
+          return result;
+        }
+
+        // Dailymotion
+        let dmRegex = /dailymotion\.com\/video\/([a-zA-Z0-9]+)/;
+        let dmMatch = rawUrl.match(dmRegex);
+        if (dmMatch) {
+          result.embedUrl = `https://www.dailymotion.com/embed/video/${dmMatch[1]}`;
+          result.title = "Dailymotion Clip";
+          result.site = "dailymotion";
+          return result;
+        }
+
+        // Facebook
+        let fbRegex = /facebook\.com\/(?:watch\/\?v=|.*?\/videos\/)(\d+)/;
+        if (fbRegex.test(rawUrl) || rawUrl.includes('facebook.com')) {
+          result.embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(rawUrl)}&show_text=0`;
+          result.title = "Facebook Video";
+          result.site = "facebook";
+          return result;
+        }
+
+        // Instagram
+        let igRegex = /(instagram\.com\/(p|reel|tv)\/([^\/?#]+))/;
+        let igMatch = rawUrl.match(igRegex);
+        if (igMatch) {
+          result.embedUrl = `https://www.instagram.com/p/${igMatch[3]}/embed/`;
+          result.title = "Instagram Video/Post";
+          result.site = "instagram";
+          return result;
+        }
+
+        // Twitter / X
+        let twRegex = /(twitter\.com|x\.com)\/\w+\/status\/(\d+)/;
+        if (twRegex.test(rawUrl)) {
+          let match = rawUrl.match(twRegex);
+          result.embedUrl = `https://twitframe.com/show?url=${encodeURIComponent(rawUrl)}`;
+          result.title = "Twitter/X Video";
+          result.site = "twitter";
+          return result;
+        }
+
+        // TikTok
+        if (rawUrl.includes('tiktok.com')) {
+          result.embedUrl = `https://www.tiktok.com/embed/v2/${rawUrl.split('/').pop()}`;
+          result.title = "TikTok Video";
+          result.site = "tiktok";
+          return result;
+        }
+
+        // Reddit
+        if (rawUrl.includes('reddit.com')) {
+          result.embedUrl = `https://www.redditmedia.com/${rawUrl.match(/reddit\.com\/r\/[^\/]+\/comments\/[^\/]+/)?.[0] || ''}?ref_source=embed&embed=true`;
+          result.title = "Reddit Video";
+          result.site = "reddit";
+          return result;
+        }
+
+        // Twitch
+        if (rawUrl.includes('twitch.tv')) {
+          result.embedUrl = `https://clips.twitch.tv/embed?clip=${rawUrl.split('/').pop()}&parent=${window.location.hostname}`;
+          result.title = "Twitch Clip";
+          result.site = "twitch";
+          return result;
+        }
+
+        // Direct video file
+        if (rawUrl.match(/\.(mp4|webm|mov|mkv)(\?.*)?$/i)) {
+          result.directDownloadUrl = rawUrl;
+          result.embedUrl = rawUrl;
+          result.title = "Direct Video File";
+          result.site = "direct";
+          return result;
+        }
+
+        // fallback oembed
+        try {
+          let oembedUrl = `https://noembed.com/embed?url=${encodeURIComponent(rawUrl)}`;
+          let res = await fetch(oembedUrl);
+          let data = await res.json();
+          if (data && data.html) {
+            let srcMatch = data.html.match(/src=["']([^"']+)["']/);
+            if (srcMatch) result.embedUrl = srcMatch[1];
+            result.title = data.title || "Embedded Video";
+            return result;
+          }
+        } catch(e) { /* ignore */ }
+
+        result.embedUrl = null;
+        result.title = "External Video (preview unavailable)";
+        result.site = "unsupported";
+        return result;
+      }
+
+      function renderPreview(info) {
+        resultArea.style.display = 'block';
+        hideError();
+
+        videoPreviewContainer.innerHTML = '';
+        downloadActionsDiv.innerHTML = '';
+        videoTitleTextSpan.innerText = info.title || "Media ready";
+
+        if (info.embedUrl) {
+          let iframe = document.createElement('iframe');
+          iframe.src = info.embedUrl;
+          iframe.setAttribute('frameborder', '0');
+          iframe.setAttribute('allowfullscreen', '1');
+          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.style.borderRadius = '1.2rem';
+          videoPreviewContainer.appendChild(iframe);
+        } else if (info.directDownloadUrl && info.directDownloadUrl.match(/\.(mp4|webm)/i)) {
+          let videoEl = document.createElement('video');
+          videoEl.controls = true;
+          videoEl.style.width = '100%';
+          videoEl.style.height = '100%';
+          videoEl.style.objectFit = 'contain';
+          videoEl.style.background = '#000';
+          let source = document.createElement('source');
+          source.src = info.directDownloadUrl;
+          source.type = 'video/mp4';
+          videoEl.appendChild(source);
+          videoPreviewContainer.appendChild(videoEl);
+        } else {
+          let placeholder = document.createElement('div');
+          placeholder.style.display = 'flex';
+          placeholder.style.flexDirection = 'column';
+          placeholder.style.alignItems = 'center';
+          placeholder.style.justifyContent = 'center';
+          placeholder.style.height = '100%';
+          placeholder.style.background = '#0f1219';
+          placeholder.style.color = '#9ca3af';
+          placeholder.innerHTML = `<i class="fas fa-video-slash" style="font-size:2.5rem; opacity:0.5;"></i><p style="margin-top:0.8rem;">Preview not available, but download options are ready</p>`;
+          videoPreviewContainer.appendChild(placeholder);
+        }
+
+        // Download buttons based on platform
+        if (info.site === 'youtube') {
+          addDownloadBtn("YouTube HD (External)", "https://y2mate.nu/", true);
+          addDownloadBtn("SaveFrom Downloader", `https://en.savefrom.net/1-youtube-video-downloader-4/`, true);
+        } else if (info.site === 'vimeo') {
+          addDownloadBtn("Vimeo Download", "https://vimeo.com/download", true);
+          addDownloadBtn("Loader.to", `https://loader.to/`, true);
+        } else if (info.site === 'facebook') {
+          addDownloadBtn("FB Video Download", `https://fbdown.net/`, true);
+          addDownloadBtn("GetFB Vid", `https://getfvid.com/`, true);
+        } else if (info.site === 'instagram') {
+          addDownloadBtn("IG Downloader", `https://snapinsta.app/`, true);
+          addDownloadBtn("Inflact IG", `https://inflact.com/downloader/instagram/video/`, true);
+        } else if (info.site === 'twitter') {
+          addDownloadBtn("Twitter Video Saver", `https://twdown.net/`, true);
+        } else if (info.site === 'tiktok') {
+          addDownloadBtn("TikTok No Watermark", `https://snaptik.app/`, true);
+        } else if (info.site === 'dailymotion') {
+          addDownloadBtn("Dailymotion Download", `https://www.dailymotion.com/`, true);
+        } else if (info.directDownloadUrl) {
+          addDownloadBtn("Direct Download MP4", info.directDownloadUrl, false);
+        } else if (info.embedUrl && info.site !== 'unsupported') {
+          addDownloadBtn("Open External Downloader", `https://cobalt.tools/`, true);
+        } else {
+          addDownloadBtn("Universal Video Saver", `https://cobalt.tools/`, true);
+        }
+
+        // Additional tip button
+        let tipBtn = document.createElement('div');
+        tipBtn.className = 'dl-btn secondary';
+        tipBtn.innerHTML = '<i class="fas fa-info-circle"></i> Right-click video (if visible) and Save As';
+        tipBtn.onclick = () => { alert("If video player is visible, right-click on it and choose 'Save Video As...'"); };
+        downloadActionsDiv.appendChild(tipBtn);
+      }
+
+      function addDownloadBtn(label, url, isExternal) {
+        let btn = document.createElement('button');
+        btn.className = 'dl-btn primary';
+        btn.innerHTML = `<i class="fas fa-download"></i> ${label}`;
+        btn.onclick = () => {
+          if (isExternal) {
+            window.open(url, '_blank');
+          } else {
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = '';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }
+        };
+        downloadActionsDiv.appendChild(btn);
+      }
+
+      async function handleFetch() {
+        let rawUrl = urlInput.value.trim();
+        if (!rawUrl) {
+          showError("Please paste a video link from any platform (YouTube, IG, FB, etc.)");
+          return;
+        }
+        setLoading(true);
+        hideError();
+        resultArea.style.display = 'none';
+        try {
+          let videoInfo = await extractVideoInfo(rawUrl);
+          if (!videoInfo.embedUrl && !videoInfo.directDownloadUrl && videoInfo.site === 'unsupported') {
+            showError("Could not parse video automatically. But you can use the third-party downloaders below.");
+            renderPreview({
+              title: "Unknown platform",
+              embedUrl: null,
+              site: "unsupported",
+              directDownloadUrl: null
+            });
+            setLoading(false);
+            return;
+          }
+          renderPreview(videoInfo);
+        } catch (err) {
+          showError("Analysis error: " + err.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      fetchBtn.addEventListener('click', handleFetch);
+      urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleFetch();
+      });
+
+      // hide result initially
+      resultArea.style.display = 'none';
+    })();
+  </script>
+</body>
+</html>
       display: flex;
       align-items: center;
       justify-content: center;
